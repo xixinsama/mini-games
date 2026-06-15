@@ -188,6 +188,7 @@ transparent = true
 position = Vector2(-32, -288)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Label" type="Label" parent="CanvasLayer" node_paths=PackedStringArray("game_manager")]
 visible = false
