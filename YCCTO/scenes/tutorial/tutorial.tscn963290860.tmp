@@ -1,0 +1,349 @@
+[gd_scene load_steps=17 format=4 uid="uid://b7nqavvh83ovx"]
+
+[ext_resource type="Script" uid="uid://bpjk25a0e0bpi" path="res://scenes/tutorial/tutorial.gd" id="1_g40di"]
+[ext_resource type="Texture2D" uid="uid://l8mvlsjryhrq" path="res://assets/images/combine.png" id="1_ymgc8"]
+[ext_resource type="PackedScene" uid="uid://2kf0x35mmjre" path="res://scenes/number_label/number_label.tscn" id="2_jaenq"]
+[ext_resource type="PackedScene" uid="uid://b1b18gvv284mh" path="res://scenes/hero/hero.tscn" id="3_bmltb"]
+[ext_resource type="Texture2D" uid="uid://067s0v6rrq7d" path="res://assets/images/china_flags_16_32.svg" id="5_r23bs"]
+[ext_resource type="Script" uid="uid://5mpes2v7078l" path="res://scripts/animed_texture_button.gd" id="6_4nriy"]
+[ext_resource type="Texture2D" uid="uid://cq2l3gwbx40df" path="res://assets/images/united_kingdom_flags_16_32.svg" id="6_g7eoy"]
+[ext_resource type="Texture2D" uid="uid://c776htq2kobx6" path="res://assets/images/japan_flags_16_32.svg" id="7_ha56g"]
+[ext_resource type="Theme" uid="uid://cu7s1t80m7fgy" path="res://assets/themes/simple_theme.tres" id="8_ha56g"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jaenq"]
+texture = ExtResource("1_ymgc8")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_bmltb"]
+sources/0 = SubResource("TileSetAtlasSource_jaenq")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ymgc8"]
+texture = ExtResource("1_ymgc8")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jaenq"]
+sources/0 = SubResource("TileSetAtlasSource_ymgc8")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pq3l0"]
+atlas = ExtResource("5_r23bs")
+region = Rect2(57, 35, 32, 20)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nriy"]
+atlas = ExtResource("6_g7eoy")
+region = Rect2(57, 35, 32, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hsofu"]
+atlas = ExtResource("7_ha56g")
+region = Rect2(57, 35, 32, 20)
+
+[node name="Tutorial" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g40di")
+
+[node name="Under" type="TileMapLayer" parent="."]
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAABAAoAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAABAAAAAAACAAYAAAABAAAAAAACAAcAAAABAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAACAAoAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAABAAAAAAADAAYAAAABAAAAAAADAAcAAAABAAAAAAADAAgAAAAAAAAAAAADAAkAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAABAAAAAAAEAAYAAAABAAAAAAAEAAcAAAABAAAAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAAAAAAAAAAFAAoAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAGAAoAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAABAAAAAAAIAAYAAAABAAAAAAAIAAcAAAABAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAABAAAAAAAJAAYAAAABAAAAAAAJAAcAAAABAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAJAAoAAAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAABAAAAAAAKAAYAAAABAAAAAAAKAAcAAAABAAAAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAALAAgAAAAAAAAAAAALAAkAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAEAAAAAAAAAAAAMAAIAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAAAAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAAAAAAAAAMAAcAAAAAAAAAAAAMAAgAAAAAAAAAAAAMAAkAAAAAAAAAAAAMAAoAAAAAAAAAAAANAAAAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAAAAAAAAAAANAAgAAAAAAAAAAAANAAkAAAAAAAAAAAANAAoAAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAQAAAAAAAAAAAAOAAUAAAABAAAAAAAOAAYAAAABAAAAAAAOAAcAAAABAAAAAAAOAAgAAAAAAAAAAAAOAAkAAAAAAAAAAAAOAAoAAAAAAAAAAAAPAAAAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAMAAAAAAAAAAAAPAAQAAAAAAAAAAAAPAAUAAAABAAAAAAAPAAYAAAABAAAAAAAPAAcAAAABAAAAAAAPAAgAAAAAAAAAAAAPAAkAAAAAAAAAAAAPAAoAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAAQAAIAAAAAAAAAAAAQAAMAAAAAAAAAAAAQAAQAAAAAAAAAAAAQAAUAAAABAAAAAAAQAAYAAAABAAAAAAAQAAcAAAABAAAAAAAQAAgAAAAAAAAAAAAQAAkAAAAAAAAAAAAQAAoAAAAAAAAAAAARAAAAAAAAAAAAAAARAAEAAAAAAAAAAAARAAIAAAAAAAAAAAARAAMAAAAAAAAAAAARAAQAAAAAAAAAAAARAAUAAAAAAAAAAAARAAYAAAAAAAAAAAARAAcAAAAAAAAAAAARAAgAAAAAAAAAAAARAAkAAAAAAAAAAAARAAoAAAAAAAAAAAASAAAAAAAAAAAAAAASAAEAAAAAAAAAAAASAAIAAAAAAAAAAAASAAMAAAAAAAAAAAASAAQAAAAAAAAAAAASAAUAAAAAAAAAAAASAAYAAAAAAAAAAAASAAcAAAAAAAAAAAASAAgAAAAAAAAAAAASAAkAAAAAAAAAAAASAAoAAAAAAAAAAAATAAAAAAAAAAAAAAATAAEAAAAAAAAAAAATAAIAAAAAAAAAAAATAAMAAAAAAAAAAAATAAQAAAAAAAAAAAATAAUAAAAAAAAAAAATAAYAAAAAAAAAAAATAAcAAAAAAAAAAAATAAgAAAAAAAAAAAATAAkAAAAAAAAAAAATAAoAAAAAAAAAAAAAAAsAAAAAAAAAAAABAAsAAAAAAAAAAAACAAsAAAAAAAAAAAADAAsAAAAAAAAAAAAEAAsAAAAAAAAAAAAFAAsAAAAAAAAAAAAGAAsAAAAAAAAAAAAHAAsAAAAAAAAAAAAIAAsAAAAAAAAAAAAJAAsAAAAAAAAAAAAKAAsAAAAAAAAAAAALAAsAAAAAAAAAAAAMAAsAAAAAAAAAAAANAAsAAAAAAAAAAAAOAAsAAAAAAAAAAAAPAAsAAAAAAAAAAAAQAAsAAAAAAAAAAAARAAsAAAAAAAAAAAASAAsAAAAAAAAAAAATAAsAAAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAD//wMAAAAAAAAAAAD//wQAAAAAAAAAAAD//wUAAAAAAAAAAAD//wYAAAAAAAAAAAD//wcAAAAAAAAAAAD//wgAAAAAAAAAAAD//wkAAAAAAAAAAAD//woAAAAAAAAAAAD//wsAAAAAAAAAAAD//wwAAAAAAAAAAAAAAAwAAAAAAAAAAAABAAwAAAAAAAAAAAACAAwAAAAAAAAAAAADAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAAFAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAHAAwAAAAAAAAAAAAIAAwAAAAAAAAAAAAJAAwAAAAAAAAAAAAKAAwAAAAAAAAAAAALAAwAAAAAAAAAAAAMAAwAAAAAAAAAAAANAAwAAAAAAAAAAAAOAAwAAAAAAAAAAAAPAAwAAAAAAAAAAAAQAAwAAAAAAAAAAAARAAwAAAAAAAAAAAASAAwAAAAAAAAAAAATAAwAAAAAAAAAAAAUAAwAAAAAAAAAAAAUAP//AAAAAAAAAAAUAAAAAAAAAAAAAAAUAAEAAAAAAAAAAAAUAAIAAAAAAAAAAAAUAAMAAAAAAAAAAAAUAAQAAAAAAAAAAAAUAAUAAAAAAAAAAAAUAAYAAAAAAAAAAAAUAAcAAAAAAAAAAAAUAAgAAAAAAAAAAAAUAAkAAAAAAAAAAAAUAAoAAAAAAAAAAAAUAAsAAAAAAAAAAAAAAP//AAAAAAAAAAABAP//AAAAAAAAAAACAP//AAAAAAAAAAADAP//AAAAAAAAAAAEAP//AAAAAAAAAAAFAP//AAAAAAAAAAAGAP//AAAAAAAAAAAHAP//AAAAAAAAAAAIAP//AAAAAAAAAAAJAP//AAAAAAAAAAAKAP//AAAAAAAAAAALAP//AAAAAAAAAAAQAP//AAAAAAAAAAARAP//AAAAAAAAAAASAP//AAAAAAAAAAATAP//AAAAAAAAAAAPAP//AAAAAAAAAAAOAP//AAAAAAAAAAANAP//AAAAAAAAAAAMAP//AAAAAAAAAAA=")
+tile_set = SubResource("TileSet_bmltb")
+
+[node name="Grid1" type="Node2D" parent="."]
+position = Vector2(224, 416)
+
+[node name="NumberLabel" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, -64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel2" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(0, -64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel3" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(64, -64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="NumberLabel4" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 0)
+scale = Vector2(4, 4)
+
+[node name="NumberLabel5" parent="Grid1" instance=ExtResource("2_jaenq")]
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel6" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 0)
+scale = Vector2(4, 4)
+num_int = 2
+
+[node name="NumberLabel7" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="NumberLabel8" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(0, 64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel9" parent="Grid1" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="Grid2" type="Node2D" parent="."]
+position = Vector2(608, 416)
+
+[node name="NumberLabel" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, -64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel2" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(0, -64)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel3" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(64, -64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="NumberLabel4" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 0)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel5" parent="Grid2" instance=ExtResource("2_jaenq")]
+scale = Vector2(4, 4)
+num_int = 4
+
+[node name="NumberLabel6" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 0)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel7" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel8" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(0, 64)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel9" parent="Grid2" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="Grid3" type="Node2D" parent="."]
+position = Vector2(992, 416)
+
+[node name="NumberLabel" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, -64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel2" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(0, -64)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel3" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(64, -64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="NumberLabel4" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 0)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel5" parent="Grid3" instance=ExtResource("2_jaenq")]
+scale = Vector2(4, 4)
+num_int = 4
+
+[node name="NumberLabel6" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 0)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel7" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(-64, 64)
+scale = Vector2(4, 4)
+num_int = 1
+
+[node name="NumberLabel8" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(0, 64)
+scale = Vector2(4, 4)
+num_int = 5
+
+[node name="NumberLabel9" parent="Grid3" instance=ExtResource("2_jaenq")]
+position = Vector2(64, 64)
+scale = Vector2(4, 4)
+num_int = 3
+
+[node name="Hero" parent="." instance=ExtResource("3_bmltb")]
+position = Vector2(928, 352)
+scale = Vector2(4, 4)
+
+[node name="Cover" type="TileMapLayer" parent="."]
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAABAAUAAAADAAAAAAADAAUAAAADAAAAAAACAAQAAAADAAAAAAACAAYAAAADAAAAAAAIAAUAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_jaenq")
+
+[node name="TitleLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 32.0
+offset_right = 172.0
+offset_bottom = 160.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[wave]唯“一”可达
+You can come this ONE[/wave]"
+horizontal_alignment = 1
+
+[node name="TextureButtonCN" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(96, 60)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 128.0
+offset_bottom = 92.0
+texture_normal = SubResource("AtlasTexture_pq3l0")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("6_4nriy")
+
+[node name="TextureButtonEN" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(96, 60)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 32.0
+offset_right = 256.0
+offset_bottom = 92.0
+texture_normal = SubResource("AtlasTexture_4nriy")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("6_4nriy")
+
+[node name="TextureButtonJA" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(96, 60)
+layout_mode = 0
+offset_left = 288.0
+offset_top = 32.0
+offset_right = 384.0
+offset_bottom = 92.0
+texture_normal = SubResource("AtlasTexture_hsofu")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("6_4nriy")
+
+[node name="RuleButton1" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -336.0
+offset_right = -256.0
+offset_bottom = -272.0
+grow_horizontal = 2
+grow_vertical = 0
+toggle_mode = true
+text = "√"
+
+[node name="RuleButton2" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -336.0
+offset_right = 128.0
+offset_bottom = -272.0
+grow_horizontal = 2
+grow_vertical = 0
+toggle_mode = true
+text = "√"
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -192.0
+offset_top = -80.0
+offset_right = 192.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_ha56g")
+
+[node name="RuleLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 128)
+layout_mode = 0
+offset_left = 64.0
+offset_top = 512.0
+offset_right = 384.0
+offset_bottom = 689.0
+theme = ExtResource("8_ha56g")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "所有格子下都有一个数字
+数字0的格子是墙
+只有数字为1的格子可以走
+数字2的格子是怪兽，走进该格子将减少倒计时2秒
+数字3的格子是传送门"
+autowrap_mode = 3
+
+[node name="RuleLabel2" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 128)
+layout_mode = 0
+offset_left = 448.0
+offset_top = 192.0
+offset_right = 768.0
+offset_bottom = 320.0
+theme = ExtResource("8_ha56g")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "但显示为周围四格的数字总和，不包括自身"
+autowrap_mode = 3
+
+[node name="RuleLabel3" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 128)
+layout_mode = 0
+offset_left = 832.0
+offset_top = 192.0
+offset_right = 1152.0
+offset_bottom = 320.0
+theme = ExtResource("8_ha56g")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "你只可以在数字1的格子上走！！！"
+autowrap_mode = 3
+
+[connection signal="pressed" from="TextureButtonCN" to="." method="_on_texture_button_cn_pressed"]
+[connection signal="pressed" from="TextureButtonEN" to="." method="_on_texture_button_en_pressed"]
+[connection signal="pressed" from="TextureButtonJA" to="." method="_on_texture_button_ja_pressed"]

@@ -1,0 +1,52 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://cu7s1t80m7fgy"]
+
+[ext_resource type="FontFile" uid="uid://dn3nl0nkt64ed" path="res://assets/fonts/SourceHanSerifCN-SemiBold-7.otf" id="1_tka8x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpjm8"]
+bg_color = Color(0.63529414, 0.7019608, 0.7372549, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.4117647, 0.41568628, 0.41568628, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tka8x"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xg4mv"]
+bg_color = Color(0.63529414, 0.7019608, 0.7372549, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
+shadow_size = 4
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n15wu"]
+bg_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.4509804, 0.45490196, 0.45490196, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_xg4mv"]
+
+[resource]
+default_font = SubResource("SystemFont_xg4mv")
+Button/colors/font_color = Color(0.21176471, 0.23921569, 0.2901961, 1)
+Button/colors/font_focus_color = Color(0.14509805, 0.16862746, 0.20392157, 1)
+Button/colors/font_hover_color = Color(0.21176471, 0.23921569, 0.2901961, 1)
+Button/colors/font_pressed_color = Color(0.14509805, 0.16862746, 0.20392157, 1)
+Button/fonts/font = ExtResource("1_tka8x")
+Button/styles/focus = SubResource("StyleBoxFlat_wpjm8")
+Button/styles/hover = SubResource("StyleBoxFlat_tka8x")
+Button/styles/normal = SubResource("StyleBoxFlat_xg4mv")
+Button/styles/pressed = SubResource("StyleBoxFlat_n15wu")
+Label/font_sizes/font_size = 18
+Label/fonts/font = SubResource("SystemFont_xg4mv")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://2kf0x35mmjre"]
+
+[ext_resource type="Script" uid="uid://d2fhuuf5qs4ge" path="res://scenes/number_label/number.gd" id="1_j1ufb"]
+[ext_resource type="FontFile" uid="uid://8s8l0n14v5vs" path="res://assets/fonts/VonwaonBitmap-16px.ttf" id="1_ve1uk"]
+
+[sub_resource type="Theme" id="Theme_j1ufb"]
+Label/constants/outline_size = 4
+Label/fonts/font = ExtResource("1_ve1uk")
+
+[node name="NumberLabel" type="Node2D"]
+script = ExtResource("1_j1ufb")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_j1ufb")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1

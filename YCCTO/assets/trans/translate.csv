@@ -1,0 +1,7 @@
+keys,zh_CN,en,ja
+START_BUTTON,太棒了 \n 我逐渐理解一切,Wonderful \n I'm starting to understand everything now,素晴らしいです \n 全てを理解していきます
+TITLE,[wave][b]唯“一”可达[/b][/wave],[wave][b]You can come this ONE[/b][/wave],[wave][b]唯一、此処へ[/b][/wave]
+RULE1,所有格子蕴含一个数字 \n 0代表该格子是墙 \n 1的格子可以走 \n 2的格子是陷阱，进入该格子将减少倒计时2秒 \n 3的格子是传送门,Each cell contains a number \n 0 represents a wall \n Cells with 1 are walkable \n Cells with 2 are traps; entering them will reduce the countdown timer by 2s \n Cells with 3 are portal,各マスには数字が含まれています \n 0は壁を表します \n 1のマスは通行可能です。\n  2のマスは罠で、進入するとカウントダウンタイマーが2秒減ります \n 3のマスはテレポーターです
+RULE2,格子上的数字显示为周围四格的数字总和，不包括自身 \n 你可以取消这两个规则,The number displayed on a cell is the sum of the numbers in its four adjacent cells (up&down&left&right). Excluding itself \n You can cancel these two rules,マスに表示される数字は、自身を除く上下左右の四方向のマスの数字の合計です。 \n これらの2つのルールは無視しても構いません
+RULE3,限时内到达终点即可,Reach the finish line within the time limit,制限時間内にゴール地点に到達してください
+RESTART,重新开始,Restart,再スタート
