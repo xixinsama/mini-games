@@ -52,9 +52,6 @@ func _ready():
 
 	# Connect signals
 	pet.input_event.connect(_on_drag_area_input)
-	quit_button.pressed.connect(_on_quit_button_pressed)
-	send_button.pressed.connect(_on_send_button_pressed)
-	save_memo_button.pressed.connect(_on_save_memo_pressed)
 	DeepSeekClient.error_occurred.connect(_on_ai_error)
 	MemoManager.memo_updated.connect(_refresh_memo_display)
 
