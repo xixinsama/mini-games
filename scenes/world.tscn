@@ -1,16 +1,15 @@
-[gd_scene load_steps=12 format=4 uid="uid://do7fx0f2ay70x"]
+[gd_scene format=4 uid="uid://do7fx0f2ay70x"]
 
 [ext_resource type="Script" uid="uid://xmatcc31kd6y" path="res://scripts/game_manager.gd" id="1_71j4m"]
 [ext_resource type="Script" uid="uid://c6ukqc2olhm3l" path="res://scripts/world.gd" id="1_i7141"]
 [ext_resource type="Texture2D" uid="uid://dmyeskugq5bgu" path="res://assets/sokoban_tilesheet.png" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://chuove4bsq6oy" path="res://scenes/box.tscn" id="2_4wyf3"]
-[ext_resource type="Script" uid="uid://cjaxdws10l44i" path="res://scripts/tile_map_layer.gd" id="2_k0juu"]
 [ext_resource type="PackedScene" uid="uid://ding5puft18qs" path="res://scenes/player.tscn" id="3_k0juu"]
 [ext_resource type="Script" uid="uid://mgmbmbnvwwc5" path="res://scripts/camera_2d.gd" id="7_7r4gi"]
 [ext_resource type="Script" uid="uid://ckyrdolko6db1" path="res://scripts/label_win.gd" id="8_4mrxx"]
 [ext_resource type="Script" uid="uid://b6lrk55f0bokl" path="res://scripts/label_record.gd" id="9_7r4gi"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4mrxx"]
 texture = ExtResource("1_nnsk1")
 24:24/size_in_atlas = Vector2i(4, 4)
 24:24/0 = 0
@@ -50,147 +49,186 @@ physics_layer_0/collision_layer = 4
 physics_layer_0/collision_mask = 3
 custom_data_layer_0/name = "type"
 custom_data_layer_0/type = 2
-sources/0 = SubResource("TileSetAtlasSource_4wyf3")
+sources/0 = SubResource("TileSetAtlasSource_4mrxx")
 
-[node name="World" type="Node2D"]
+[sub_resource type="GDScript" id="GDScript_4mrxx"]
+script/source = "extends TileMapLayer
+
+enum CellType { FLOOR = 0, WALL = 1, TARGET = -1 }
+
+const tile_size: Vector2 = Vector2(64, 64)
+
+# 根据世界坐标获取单元格类型
+func get_cell_type(world_pos: Vector2) -> int:
+	var map_pos = local_to_map(world_pos)
+	var data = get_cell_tile_data(map_pos)  # 假设自定义数据在第0层
+	
+	if data:
+		return data.get_custom_data(\"type\")
+	return CellType.WALL
+
+# 检查是否为墙
+func is_wall(world_pos: Vector2) -> bool:
+	return get_cell_type(world_pos) == CellType.WALL
+
+# 检查是否为目标点
+func is_target(world_pos: Vector2) -> bool:
+	return get_cell_type(world_pos) == CellType.TARGET
+
+# 获取所有目标点位置（世界坐标）
+func get_all_target_positions() -> Array:
+	var targets = []
+	var used_cells = get_used_cells()  # 获取第0层所有已用单元格
+	
+	for cell in used_cells:
+		if get_cell_type(map_to_local(cell)) == CellType.TARGET:
+			targets.append(map_to_local(cell) + tile_size / 2)
+	
+	return targets
+"
+
+[node name="World" type="Node2D" unique_id=897162416]
 script = ExtResource("1_i7141")
 
-[node name="GameManager" type="Node" parent="."]
+[node name="GameManager" type="Node" parent="." unique_id=1947974191]
 script = ExtResource("1_71j4m")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=825082294]
 position = Vector2(0, -2)
 tile_map_data = PackedByteArray("AAAAAAAAAAAYABgAAAAAAAEAAAAcABgAAAAAAAMAAAAcABgAAAAAAAQAAAAcABgAAAAAAAUAAAAcABgAAAAAAAYAAAAcABgAAAAAAAcAAAAcABgAAAABAAcAAAAkABgAAAADAAcAAAAkABgAAAAEAAcAAAAkABgAAAAFAAcAAAAkABgAAAAGAAcAAAAkABgAAAAHAAcAAAAkABgAAAAHAAYAAAAgABgAAAAHAAQAAAAgABgAAAAHAAMAAAAgABgAAAAHAAIAAAAgABgAAAAHAAEAAAAgABgAAAAHAAAAAAAgABgAAAAGAAAAAAAYABgAAAAEAAAAAAAYABgAAAADAAAAAAAYABgAAAACAAAAAAAYABgAAAABAAAAAAAYABgAAAABAAEAAAAoABgAAAABAAIAAAAsABgAAAABAAMAAAAoABgAAAABAAQAAAAoABgAAAABAAUAAAAoABgAAAABAAYAAAAoABgAAAACAAYAAAAsABgAAAACAAUAAAAsABgAAAACAAQAAAAwABgAAAACAAIAAAAsABgAAAACAAEAAAAoABgAAAADAAEAAAAoABgAAAAEAAEAAAAoABgAAAAFAAEAAAAsABgAAAAFAAIAAAAsABgAAAAGAAIAAAAoABgAAAAGAAMAAAAoABgAAAAGAAQAAAAoABgAAAAGAAUAAAAsABgAAAAFAAYAAAAoABgAAAAEAAUAAAAwABgAAAAEAAQAAAAsABgAAAAEAAIAAAAwABgAAAADAAIAAAAwABgAAAADAAMAAAAsABgAAAADAAQAAAAsABgAAAADAAUAAAAwABgAAAADAAYAAAAoABgAAAAEAAYAAAAoABgAAAAGAAEAAAAoABgAAAAAAAIAAAAsABgAAAD//wIAAAAsABgAAAD+/wIAAAAsABgAAAD7/wIAAAAcABgAAAD6/wIAAAAcABgAAAD5/wIAAAAoABgAAAD4/wIAAAAsABgAAAD8/wMAAAAcABgAAAD8/wQAAAAcABgAAAD8/wUAAAAcABgAAAD8/wYAAAAoABgAAAD8/wcAAAAoABgAAAD9/wQAAAAoABgAAAD9/wMAAAAoABgAAAD9////AAAoABgAAAD9/wcAAAAoABgAAAD9/wYAAAAoABgAAAD+/wAAAAAcABgAAAD+////AAAoABgAAAD+/wMAAAAsABgAAAD+/wQAAAAsABgAAAD+/wUAAAAsABgAAAD+/wYAAAAsABgAAAD+/wcAAAAsABgAAAD//wcAAAAoABgAAAD//wYAAAAoABgAAAD//wUAAAAoABgAAAD//wQAAAAoABgAAAD//wAAAAAcABgAAAD/////AAAoABgAAAAFAAAAAAAsABgAAAAFAP//AAAsABgAAAAFAP7/AAAsABgAAAAFAP3/AAAoABgAAAAEAP3/AAAYABgAAAADAP3/AAAYABgAAAACAP3/AAAYABgAAAABAP3/AAAYABgAAAAAAP3/AAAYABgAAAAGAP3/AAAoABgAAAAHAP3/AAAYABgAAAAIAP3/AAAYABgAAAAJAP3/AAAsABgAAAAKAP3/AAAsABgAAAALAP3/AAAsABgAAAAAAPz/AAAYABgAAAABAPz/AAAYABgAAAACAPz/AAAYABgAAAADAPz/AAAYABgAAAAEAPz/AAAYABgAAAAFAPz/AAAYABgAAAD///z/AAAYABgAAAAGAPz/AAAYABgAAAAHAPz/AAAYABgAAAAIAPz/AAAYABgAAAAJAPz/AAAsABgAAAAMAP3/AAAsABgAAAADAP7/AAAsABgAAAAEAP7/AAAsABgAAAAGAP7/AAAoABgAAAAEAP//AAAYABgAAAAGAP//AAAoABgAAAAHAP7/AAAYABgAAAAHAAUAAAAsABgAAAAIAAUAAAAsABgAAAAJAAUAAAAgABgAAAAKAAUAAAAsABgAAAALAAUAAAAgABgAAAAMAAUAAAAoABgAAAAMAAQAAAAoABgAAAALAAQAAAAgABgAAAALAAMAAAAgABgAAAAIAAEAAAAsABgAAAAIAAIAAAAsABgAAAAJAAQAAAAsABgAAAAJAAYAAAAoABgAAAAJAAcAAAAoABgAAAAIAAYAAAAgABgAAAAIAAcAAAAoABgAAAAIAAMAAAAsABgAAAAIAAQAAAAsABgAAAAKAAQAAAAsABgAAAALAAYAAAAgABgAAAALAAcAAAAgABgAAAALAAgAAAAgABgAAAALAAkAAAAgABgAAAALAAoAAAAoABgAAAAKAAoAAAAsABgAAAAMAAYAAAAoABgAAAAMAAcAAAAoABgAAAAKAAgAAAAsABgAAAAHAAgAAAAoABgAAAAGAAgAAAAoABgAAAAFAAgAAAAoABgAAAAEAAgAAAAoABgAAAADAAgAAAAkABgAAAACAAgAAAAsABgAAAACAAcAAAAsABgAAAABAAkAAAAkABgAAAAAAAkAAAAoABgAAAAAAAgAAAAoABgAAAABAAgAAAAkABgAAAAEAAkAAAAoABgAAAADAAkAAAAkABgAAAAAAAoAAAAoABgAAAD//wkAAAAoABgAAAD//wgAAAAoABgAAAADAAoAAAAoABgAAAAEAAoAAAAkABgAAAAKAAkAAAAsABgAAAAJAAAAAAAsABgAAAAJAP//AAAoABgAAAAJAP7/AAAoABgAAAALAP//AAAsABgAAAALAAIAAAAoABgAAAAJAAoAAAAoABgAAAAJAAsAAAAsABgAAAAIAAsAAAAsABgAAAAIAAwAAAAoABgAAAAHAAwAAAAoABgAAAAGAAwAAAAoABgAAAAFAAwAAAAoABgAAAADAAwAAAAsABgAAAACAAwAAAAsABgAAAD//wsAAAAcABgAAAD+/wsAAAAcABgAAAD9/wsAAAAcABgAAAD8/wsAAAAcABgAAAD8/woAAAAoABgAAAD7/woAAAAoABgAAAD6/wkAAAAsABgAAAD5/wkAAAAsABgAAAD5/wgAAAAoABgAAAD4/wgAAAAsABgAAAD4/wcAAAAsABgAAAD3/wcAAAAoABgAAAD2/wYAAAAcABgAAAD1/wQAAAAsABgAAAD1/wMAAAAsABgAAAD1/wIAAAAsABgAAAD1/wEAAAAsABgAAAD2/wAAAAAcABgAAAD2////AAAcABgAAAD5////AAAYABgAAAD6//7/AAAoABgAAAD7//7/AAAsABgAAAD8//7/AAAsABgAAAD9//7/AAAsABgAAAD+//7/AAAsABgAAAD+//3/AAAYABgAAAD///3/AAAYABgAAAD2//7/AAAcABgAAAD1//3/AAAsABwAAAD0//z/AAAoABgAAADz//v/AAAcABgAAADy//r/AAAoABgAAADx//r/AAAcABgAAADx//n/AAAcABgAAADx/wMAAAAcABgAAADz/wMAAAAoABgAAADz/wIAAAAoABgAAAD0/wIAAAAcABgAAAD0/wEAAAAcABgAAADz/wAAAAAoABgAAADy////AAAoABgAAADy//7/AAAoABgAAADx//7/AAAcABgAAADx//3/AAAcABgAAADz////AAAoABgAAAD0/wAAAAAcABgAAAD1/wAAAAAsABgAAAD2/wEAAAAcABgAAAD0////AAAcABgAAADz//7/AAAoABgAAADz/wEAAAAoABgAAAD2/wMAAAAcABgAAADx////AAAcABgAAADy/wAAAAAoABgAAAD7/wQAAAAoABgAAAD5/wQAAAAoABgAAAD4/wQAAAAsABgAAADz/wQAAAAoABgAAAANAAUAAAAsABgAAAAOAAUAAAAoABgAAAAPAAUAAAAgABgAAAARAAUAAAAgABgAAAAKAPn/AAAYABgAAAAKAPr/AAAYABgAAAAKAPv/AAAYABgAAAAKAAwAAAAoABgAAAAKAA0AAAAoABgAAAD1/wUAAAAsABgAAAD0/wUAAAAcABgAAADz/wUAAAAcABgAAADx/wEAAAAcABgAAADx/wIAAAAcABgAAADz/wkAAAAoABgAAADy/wYAAAAcABgAAADx/wgAAAAcABgAAADx/wcAAAAcABgAAADx/wYAAAAcABgAAADx/wUAAAAcABgAAADx/wkAAAAcABgAAADx/woAAAAcABgAAADx/wsAAAAcABgAAADx/wwAAAAcABgAAADx/w0AAAAcABgAAADx/w4AAAAkABgAAADx//z/AAAoABgAAAD1/wcAAAAsABgAAAD1/wgAAAAcABgAAAD1/wkAAAAsABgAAAD2/woAAAAoABgAAAD2/wsAAAAcABgAAAD3/w0AAAAoABgAAADx//v/AAAcABgAAADy//n/AAAYABgAAADy//v/AAAcABgAAADy//z/AAAoABgAAADy//3/AAAcABgAAADz//n/AAAYABgAAADz//r/AAAoABgAAADz//z/AAAoABgAAADz//3/AAAcABgAAAD0//n/AAAYABgAAAD0//r/AAAoABgAAAD0//v/AAAoABgAAAD0//3/AAAcABgAAAD0//7/AAAcABgAAAD1//n/AAAYABgAAAD1//r/AAAoABgAAAD1//v/AAAsABgAAAD1//7/AAAsABgAAAD2//n/AAAYABgAAAD2//r/AAAoABgAAAD2//v/AAAsABgAAAD2//z/AAAoABgAAAD2//3/AAAcABgAAAD3//n/AAAYABgAAAD3//r/AAAoABgAAAD3//v/AAAsABgAAAD3//z/AAAoABgAAAD4//n/AAAYABgAAAD5//n/AAAYABgAAAD5//r/AAAYABgAAAD5//v/AAAYABgAAAD5//z/AAAYABgAAAD5//3/AAAYABgAAAD5//7/AAAYABgAAAD6//n/AAAYABgAAAD6//r/AAAYABgAAAD6//v/AAAoABgAAAD6//z/AAAoABgAAAD6//3/AAAoABgAAAD7//n/AAAYABgAAAD7//r/AAAYABgAAAD7//v/AAAsABgAAAD7//z/AAAsABgAAAD8//n/AAAYABgAAAD8//r/AAAYABgAAAD8//v/AAAsABgAAAD8//z/AAAoABgAAAD8//3/AAAYABgAAAD9//n/AAAYABgAAAD9//r/AAAYABgAAAD9//v/AAAsABgAAAD9//z/AAAYABgAAAD9//3/AAAYABgAAAD+//n/AAAYABgAAAD+//v/AAAsABgAAAD+//z/AAAYABgAAAD///n/AAAYABgAAAD///v/AAAsABwAAAD///7/AAAsABgAAAAAAPn/AAAYABgAAAAAAPv/AAAsABgAAAAAAP7/AAAsABgAAAABAPn/AAAYABgAAAABAPv/AAAsABgAAAABAP7/AAAsABgAAAACAPn/AAAYABgAAAACAPv/AAAsABgAAAACAP7/AAAsABgAAAADAPn/AAAYABgAAAADAPv/AAAsABgAAAAEAPn/AAAYABgAAAAEAPv/AAAsABgAAAAFAPn/AAAYABgAAAAFAPv/AAAsABgAAAAGAPn/AAAYABgAAAAGAPv/AAAsABgAAAAHAPn/AAAYABgAAAAHAPr/AAAoABgAAAAHAPv/AAAsABgAAAAIAPn/AAAYABgAAAAIAPr/AAAoABgAAAAIAPv/AAAsABgAAAAIAP7/AAAYABgAAAAJAPn/AAAYABgAAAAJAPr/AAAoABgAAAAJAPv/AAAsABgAAAALAPn/AAAsABgAAAALAPr/AAAsABgAAAALAPv/AAAsABgAAAALAPz/AAAsABgAAAAMAPn/AAAYABgAAAAMAPr/AAAoABgAAAAMAPv/AAAoABgAAAAMAPz/AAAgABgAAAANAPn/AAAYABgAAAANAPr/AAAoABgAAAANAPv/AAAoABgAAAANAPz/AAAgABgAAAANAP3/AAAsABgAAAAOAPn/AAAYABgAAAAOAPr/AAAoABgAAAAOAPv/AAAoABgAAAAOAPz/AAAgABgAAAAOAP3/AAAsABgAAAAPAPn/AAAYABgAAAAPAPr/AAAoABgAAAAPAPv/AAAoABgAAAAPAPz/AAAgABgAAAAPAP3/AAAgABgAAAAQAPn/AAAYABgAAAAQAPr/AAAoABgAAAAQAPv/AAAoABgAAAAQAPz/AAAoABgAAAAQAP3/AAAoABgAAAARAPn/AAAYABgAAAARAPr/AAAgABgAAAARAPv/AAAgABgAAAARAPz/AAAgABgAAAARAP3/AAAgABgAAAARAP7/AAAgABgAAADx/wAAAAAcABgAAADy/wcAAAAcABgAAADy/wgAAAAcABgAAADy/wkAAAAcABgAAADy/woAAAAcABgAAADy/wsAAAAcABgAAADy/wwAAAAoABgAAADy/w0AAAAoABgAAADz/wsAAAAcABgAAADz/wwAAAAoABgAAADz/w0AAAAoABgAAAD0/wMAAAAcABgAAAD0/wcAAAAsABgAAAD0/wgAAAAsABgAAAD0/wkAAAAsABgAAAD0/wsAAAAsABwAAAD0/w0AAAAoABgAAAD1////AAAsABgAAAD1/wYAAAAsABgAAAD1/woAAAAcABgAAAD1/wsAAAAcABgAAAD1/w0AAAAoABgAAAD2/wcAAAAcABgAAAD2/wgAAAAcABgAAAD2/wkAAAAsABgAAAD2/w0AAAAoABgAAAD3/wgAAAAoABgAAAD3/wkAAAAsABgAAAD3/woAAAAoABgAAAD3/wsAAAAcABgAAAD4/wAAAAAsABgAAAD4/wEAAAAsABgAAAD4/wMAAAAsABgAAAD4/wUAAAAsABgAAAD4/wYAAAAsABgAAAD4/wkAAAAsABgAAAD4/woAAAAoABgAAAD4/w0AAAAoABgAAAD5/wAAAAAcABgAAAD5/wMAAAAoABgAAAD5/wUAAAAoABgAAAD5/wYAAAAoABgAAAD5/wcAAAAoABgAAAD5/woAAAAoABgAAAD5/wsAAAAcABgAAAD5/w0AAAAoABgAAAD6////AAAoABgAAAD6/wAAAAAcABgAAAD6/wMAAAAoABgAAAD6/wYAAAAoABgAAAD6/wcAAAAoABgAAAD6/wgAAAAoABgAAAD6/woAAAAoABgAAAD6/wsAAAAcABgAAAD6/w0AAAAoABgAAAD7////AAAoABgAAAD7/wAAAAAcABgAAAD7/wEAAAAcABgAAAD7/wMAAAAcABgAAAD7/wUAAAAoABgAAAD7/wYAAAAoABgAAAD7/wcAAAAoABgAAAD7/wgAAAAoABgAAAD7/wkAAAAsABgAAAD7/wsAAAAcABgAAAD7/w0AAAAoABgAAAD8////AAAoABgAAAD8/wgAAAAoABgAAAD8/wkAAAAsABgAAAD8/w0AAAAoABgAAAD9/wgAAAAoABgAAAD9/wkAAAAsABgAAAD9/woAAAAoABgAAAD9/w0AAAAoABgAAAD+/wgAAAAsABgAAAD+/wkAAAAsABgAAAD+/woAAAAoABgAAAD+/w0AAAAoABgAAAD//woAAAAoABgAAAD//w0AAAAoABgAAAAAAA0AAAAoABgAAAABAA0AAAAoABgAAAACAA0AAAAkABgAAAAFAA0AAAAoABgAAAAGAA0AAAAoABgAAAAHAA0AAAAoABgAAAAIAA0AAAAoABgAAAAJAAwAAAAoABgAAAAJAA0AAAAoABgAAAALAAwAAAAoABgAAAALAA0AAAAoABgAAAALAA4AAAAkABgAAAAMAAwAAAAoABgAAAAMAA0AAAAoABgAAAAMAA4AAAAkABgAAAANAAwAAAAoABgAAAANAA0AAAAoABgAAAANAA4AAAAkABgAAAAOAAwAAAAoABgAAAAOAA0AAAAoABgAAAAOAA4AAAAkABgAAAAPAAwAAAAoABgAAAAPAA0AAAAoABgAAAAPAA4AAAAkABgAAAAQAAwAAAAoABgAAAAQAA0AAAAoABgAAAAQAA4AAAAkABgAAAARAAwAAAAgABgAAAARAA0AAAAgABgAAAARAA4AAAAgABgAAAAAAAsAAAAcABgAAAABAAsAAAAkABgAAAACAAsAAAAoABgAAAADAAsAAAAoABwAAAAEAAsAAAAsABgAAAAFAAkAAAAoABgAAAAFAAsAAAAsABgAAAAGAAoAAAAoABgAAAAGAAsAAAAsABgAAAAHAAoAAAAoABgAAAAHAAsAAAAsABgAAAAMAAoAAAAoABgAAAANAAgAAAAsABgAAAANAAkAAAAsABgAAAANAAoAAAAsABgAAAANAAsAAAAsABgAAAAOAAoAAAAoABgAAAAOAAsAAAAoABgAAAAPAAgAAAAoABgAAAAPAAkAAAAgABgAAAAPAAoAAAAoABgAAAAPAAsAAAAoABgAAAAQAAgAAAAoABgAAAAQAAkAAAAgABgAAAAQAAoAAAAoABgAAAAQAAsAAAAoABgAAAARAAgAAAAoABgAAAARAAkAAAAgABgAAAARAAoAAAAgABgAAAARAAsAAAAgABgAAAAIAP//AAAYABgAAAAIAAAAAAAsABgAAAAKAAYAAAAsABgAAAAKAAcAAAAsABgAAAAMAP//AAAoABgAAAAMAAAAAAAoABgAAAAMAAIAAAAoABgAAAAMAAMAAAAgABgAAAANAP//AAAgABgAAAANAAAAAAAgABgAAAANAAEAAAAgABgAAAANAAIAAAAsABgAAAANAAMAAAAsABgAAAANAAQAAAAsABgAAAANAAYAAAAsABgAAAAOAP//AAAsABgAAAAOAAAAAAAsABgAAAAOAAMAAAAsABgAAAAOAAQAAAAoABgAAAAOAAYAAAAoABgAAAAOAAcAAAAgABgAAAAPAP//AAAgABgAAAAPAAAAAAAgABgAAAAPAAEAAAAgABgAAAAPAAIAAAAgABgAAAAPAAMAAAAgABgAAAAPAAQAAAAgABgAAAAPAAYAAAAgABgAAAAPAAcAAAAgABgAAAAQAP//AAAoABgAAAAQAAAAAAAoABgAAAAQAAEAAAAoABgAAAAQAAIAAAAoABgAAAARAP//AAAgABgAAAARAAAAAAAgABgAAAARAAEAAAAgABgAAAARAAIAAAAgABgAAAARAAMAAAAgABgAAAARAAQAAAAgABgAAAARAAYAAAAgABgAAAARAAcAAAAgABgAAAAAAP//AAAoABgAAAABAP//AAAoABgAAAACAP//AAAoABgAAAADAP//AAAoABgAAAAHAP//AAAYABgAAAAJAAEAAAAgABgAAAAJAAIAAAAgABgAAAAJAAMAAAAgABgAAAAKAAIAAAAoABgAAAAKAAMAAAAgABgAAAD2/wQAAAAcABgAAADx/wQAAAAcABgAAADy/w4AAAAkABgAAADz/w4AAAAkABgAAAD0/w4AAAAkABgAAAD1/w4AAAAkABgAAAD2/w4AAAAkABgAAAD3/w4AAAAkABgAAAD4/w4AAAAkABgAAAD5/w4AAAAkABgAAAD6/w4AAAAoABgAAAD7/w4AAAAkABgAAAD8/w4AAAAkABgAAAD9/w4AAAAkABgAAAD+/w4AAAAkABgAAAD//w4AAAAkABgAAAAAAA4AAAAkABgAAAABAA4AAAAkABgAAAACAA4AAAAkABgAAAADAA4AAAAkABgAAAAEAA4AAAAkABgAAAAFAA4AAAAkABgAAAAGAA4AAAAkABgAAAAHAA4AAAAkABgAAAAIAA4AAAAkABgAAAAJAA4AAAAkABgAAAAKAA4AAAAkABgAAAAFAAUAAAAsABgAAAAGAAYAAAAoABgAAADy/wEAAAAoABgAAADy/wIAAAAoABgAAAD0/wQAAAAcABgAAADy/wMAAAAoABgAAADy/wQAAAAoABgAAADy/wUAAAAcABgAAAD6/wQAAAAoABgAAAD6/wUAAAAoABgAAAD8/wAAAAAcABgAAAD8/wEAAAAcABgAAAD8/wIAAAAoABgAAAD9/wAAAAAcABgAAAD9/wIAAAAoABgAAAAOAAIAAAAwABwAAAD6/wEAAAAoABgAAAD5/wEAAAAoABgAAAD//wEAAAAcABgAAAD+/wEAAAAoABgAAAACAAkAAAAsABgAAAACAAoAAAAkABgAAAABAAoAAAAoABgAAAD9/wEAAAAoABgAAAD//wMAAAAoABgAAAD9/wUAAAAoABgAAAD4/wsAAAAcABgAAAD0/wwAAAAsABgAAAD1/wwAAAAsABgAAAD2/wwAAAAsABgAAAD3/wwAAAAsABgAAAD4/wwAAAAsABgAAAD5/wwAAAAsABgAAAD6/wwAAAAsABgAAAD7/wwAAAAsABgAAAD8/wwAAAAsABgAAAD9/wwAAAAsABgAAAD+/wwAAAAsABgAAAD//wwAAAAsABgAAAAAAAwAAAAsABgAAAABAAwAAAAsABgAAADw//z/AAAoABgAAADv//z/AAAoABgAAADu//z/AAAoABgAAAALAPj/AAAsABgAAAALAPf/AAAsABgAAAAKAPz/AAAYABgAAAASAAgAAAAoABgAAAATAAgAAAAoABgAAAAUAAgAAAAoABgAAAAVAAgAAAAwABgAAAAWAAgAAAAoABgAAAD6/xAAAAAoABgAAAD6/w8AAAAoABgAAAAFAAoAAAAoABgAAAAHAAkAAAAoABgAAAAGAAkAAAAoABgAAAAIAAkAAAAoABgAAAAJAAkAAAAoABgAAAAJAAgAAAAoABgAAAAIAAgAAAAoABgAAAAIAAoAAAAoABgAAAAKAAsAAAAsABgAAAALAAsAAAAsABgAAAAMAAsAAAAsABgAAAAGAPr/AAAYABgAAAAFAPr/AAAYABgAAAAEAPr/AAAYABgAAAADAPr/AAAYABgAAAACAPr/AAAYABgAAAABAPr/AAAYABgAAAAAAPr/AAAYABgAAAD///r/AAAYABgAAAD+//r/AAAYABgAAAD4//r/AAAoABgAAAD4//v/AAAsABgAAAD4//z/AAAsABgAAAD4//3/AAAsABgAAAD4//7/AAAsABgAAAD4////AAAsABgAAAD7//3/AAAsABgAAAAKAP//AAAoABgAAAAKAP7/AAAoABgAAAALAP7/AAAsABgAAAAMAP7/AAAoABgAAAANAP7/AAAgABgAAAAOAP7/AAAsABgAAAAOAAEAAAAsABgAAAAPAP7/AAAgABgAAAAWAAcAAAAoABgAAAAVAAcAAAAoABgAAADs//v/AAAoABgAAADs//z/AAAoABgAAADs//3/AAAoABgAAADt//3/AAAoABgAAADt//v/AAAoABgAAADu//v/AAAoABgAAADu//3/AAAoABgAAADt//z/AAAoABwAAAAMAAkAAAAgABgAAAAOAAkAAAAgABgAAAAMAAgAAAAoABgAAAANAAcAAAAsABgAAAAOAAgAAAAoABgAAAADAA0AAAAoABgAAAAEAAwAAAAkABgAAAAEAA0AAAAkABgAAAD2/wIAAAAcABgAAAD2/wUAAAAcABgAAAD0/woAAAAsABgAAAAKAPf/AAAsABwAAAAKAPb/AAAsABwAAAALAPX/AAAsABwAAAAMAPb/AAAsABwAAAAMAPf/AAAsABwAAAALAPb/AAAsABwAAAANAPf/AAAsABgAAAAKAPj/AAAsABwAAAAJAPj/AAAsABwAAAAMAPj/AAAsABwAAAANAPj/AAAsABwAAAAQAP7/AAAoABgAAAAQAAMAAAAoABgAAAAQAAQAAAAoABgAAAAQAAUAAAAoABgAAAD1//z/AAAsABgAAAAJAPb/AAAsABgAAAAIAPb/AAAsABgAAAAIAPf/AAAsABgAAAAIAPj/AAAsABgAAAAHAPX/AAAsABgAAAAHAPb/AAAsABgAAAAHAPf/AAAsABgAAAAHAPj/AAAsABgAAAAIAPX/AAAsABgAAAAJAPX/AAAsABgAAAAKAPX/AAAsABgAAAAJAPT/AAAsABgAAAAIAPT/AAAsABgAAAAHAPT/AAAsABgAAAAGAPT/AAAsABgAAAAGAPX/AAAsABgAAAAGAPb/AAAsABgAAAAGAPf/AAAsABgAAAAGAPj/AAAsABgAAAAKAPT/AAAsABgAAAALAPT/AAAsABgAAAD3//3/AAAcABgAAAD3//7/AAAoABgAAAD3////AAAoABgAAAD3/wAAAAAoABgAAAD3/wEAAAAoABgAAAD3/wIAAAAoABgAAAD3/wMAAAAoABgAAAD3/wQAAAAoABgAAAD3/wUAAAAoABgAAAD3/wYAAAAoABgAAADz/wcAAAAoABgAAADz/wgAAAAoABgAAADz/woAAAAoABgAAADz/wYAAAAoABgAAAD0/wYAAAAoABgAAAAQAAYAAAAoABgAAAAQAAcAAAAoABgAAAAMAAEAAAAoABgAAAAKAAAAAAAsABgAAAAKAAEAAAAoABgAAAALAAAAAAAsABgAAAALAAEAAAAoABgAAAAMAPT/AAAsABgAAAAMAPX/AAAsABgAAAANAPT/AAAsABgAAAANAPX/AAAsABgAAAANAPb/AAAsABgAAAAOAPT/AAAsABgAAAAOAPX/AAAsABgAAAAOAPb/AAAsABgAAAAOAPf/AAAsABgAAAAOAPj/AAAsABgAAAAPAPT/AAAsABgAAAAPAPX/AAAsABgAAAAPAPb/AAAsABgAAAAPAPf/AAAsABgAAAAPAPj/AAAsABgAAAAQAPT/AAAsABgAAAAQAPX/AAAsABgAAAAQAPb/AAAsABgAAAAQAPf/AAAsABgAAAAQAPj/AAAsABgAAAAVAAkAAAAoABgAAAAWAAkAAAAoABgAAAD5/xEAAAAoABgAAAD6/xEAAAAsABgAAAD7/xEAAAAoABgAAAD5/xIAAAAoABgAAAD6/xIAAAAoABgAAAD7/xIAAAAoABgAAAD5/xAAAAAoABgAAAD7/xAAAAAoABgAAAAUAAcAAAAoABgAAAAUAAkAAAAoABgAAAACAAMAAAAwABgAAAAFAAMAAAAwABgAAAAFAAQAAAAwABgAAAAEAAMAAAAsABgAAADw//3/AAAcABgAAADv//3/AAAcABgAAADv//7/AAAcABgAAADu//7/AAAcABgAAADt//7/AAAcABgAAADs//7/AAAcABgAAADr//7/AAAcABgAAADr//3/AAAcABgAAADr//z/AAAcABgAAADr//v/AAAcABgAAADr//r/AAAcABgAAADs//r/AAAcABgAAADt//r/AAAsABgAAADu//r/AAAcABgAAADv//r/AAAcABgAAADv//v/AAAcABgAAADw//v/AAAcABgAAAD5/w8AAAAkABgAAAD4/w8AAAAkABgAAAD4/xAAAAAkABgAAAD4/xEAAAAkABgAAAD4/xIAAAAkABgAAAD4/xMAAAAkABgAAAD5/xMAAAAkABgAAAD6/xMAAAAkABgAAAD7/xMAAAAkABgAAAD8/xMAAAAkABgAAAD8/xIAAAAkABgAAAD8/xEAAAAkABgAAAD8/xAAAAAkABgAAAD8/w8AAAAkABgAAAD7/w8AAAAkABgAAAASAAkAAAAgABgAAAATAAkAAAAgABgAAAASAAoAAAAgABgAAAATAAoAAAAgABgAAAAUAAoAAAAgABgAAAAVAAoAAAAgABgAAAAWAAoAAAAgABgAAAAXAAoAAAAgABgAAAAXAAkAAAAgABgAAAAXAAgAAAAgABgAAAAXAAcAAAAgABgAAAAXAAYAAAAgABgAAAAWAAYAAAAgABgAAAAVAAYAAAAgABgAAAAUAAYAAAAgABgAAAATAAYAAAAgABgAAAASAAYAAAAgABgAAAASAAcAAAAgABgAAAATAAcAAAAgABgAAAAFAPj/AAAYABgAAAAFAPf/AAAYABgAAAAFAPb/AAAsABgAAAAFAPX/AAAYABgAAAAFAPT/AAAYABgAAAAFAPP/AAAYABgAAAAGAPP/AAAYABgAAAAHAPP/AAAYABgAAAAIAPP/AAAYABgAAAAJAPP/AAAYABgAAAAKAPP/AAAYABgAAAALAPP/AAAYABgAAAAMAPP/AAAYABgAAAANAPP/AAAYABgAAAAOAPP/AAAYABgAAAAPAPP/AAAYABgAAAAQAPP/AAAYABgAAAARAPP/AAAYABgAAAARAPT/AAAYABgAAAARAPX/AAAYABgAAAARAPb/AAAYABgAAAARAPf/AAAYABgAAAARAPj/AAAYABgAAAACAPX/AAAYABgAAAADAPb/AAAsABgAAAAEAPX/AAAYABgAAAACAPf/AAAYABgAAAAEAPf/AAAYABgAAAABABAAAAAcABgAAAAAAA8AAAAcABgAAAD//xAAAAAcABgAAAD//xEAAAAcABgAAAAAABIAAAAcABgAAAABABMAAAAcABgAAAAAABAAAAAYABgAAAAAABEAAAAYABgAAAABABEAAAAYABgAAAACABEAAAAcABgAAAADABAAAAAcABgAAAABABIAAAAYABgAAAAEAA8AAAAcABgAAAACABQAAAAcABgAAAADABMAAAAcABgAAAAEABIAAAAcABgAAAAFABEAAAAcABgAAAAFABAAAAAcABgAAAACABIAAAAYABgAAAACABMAAAAYABgAAAADABIAAAAYABgAAAADABEAAAAYABgAAAAEABEAAAAYABgAAAAEABAAAAAYABgAAADt//n/AAAsABgAAADt//j/AAAsABgAAADt//f/AAAsABgAAADu//f/AAAsABgAAADv//f/AAAsABgAAADw//f/AAAsABgAAADx//f/AAAsABgAAADy//f/AAAsABgAAADz//f/AAAsABgAAAD0//f/AAAsABgAAAD1//f/AAAsABgAAAD2//f/AAAsABgAAAD3//f/AAAsABgAAAD4//f/AAAsABgAAAD5//f/AAAsABgAAAD6//f/AAAsABgAAAD7//f/AAAsABgAAAD8//f/AAAsABgAAAD9//f/AAAsABgAAAD+//f/AAAsABgAAAD///f/AAAsABgAAAAAAPf/AAAsABgAAAABAPf/AAAsABgAAAABAPb/AAAsABgAAAACAPb/AAAsABgAAAAEAPb/AAAsABgAAADs//j/AAAcABgAAADu//j/AAAcABgAAADs//b/AAAcABgAAADu//b/AAAcABgAAAAJAPf/AAAsABwAAAA=")
 tile_set = SubResource("TileSet_k0juu")
-script = ExtResource("2_k0juu")
+script = SubResource("GDScript_4mrxx")
 
-[node name="Boxes" type="Node2D" parent="."]
+[node name="Boxes" type="Node2D" parent="." unique_id=265338432]
 
-[node name="Box" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box" parent="Boxes" unique_id=1068633066 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(226, 284)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box2" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box2" parent="Boxes" unique_id=433850121 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(287, 222)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box3" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box3" parent="Boxes" unique_id=1447059071 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(288, 285)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box4" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box4" parent="Boxes" unique_id=1440586211 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(161, 162)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box5" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box5" parent="Boxes" unique_id=904073403 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(1373, 542)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box6" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box6" parent="Boxes" unique_id=904314733 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(735, -610)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box7" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box7" parent="Boxes" unique_id=1616231703 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(667, -606)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box8" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box8" parent="Boxes" unique_id=351787548 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(801, -608)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box9" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box9" parent="Boxes" unique_id=778440438 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(737, -672)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box10" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box10" parent="Boxes" unique_id=1781201360 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(671, -543)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box11" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box11" parent="Boxes" unique_id=1934951532 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(799, -545)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box12" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box12" parent="Boxes" unique_id=803123580 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(935, -545)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box13" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box13" parent="Boxes" unique_id=470700192 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(861, -480)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box14" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box14" parent="Boxes" unique_id=1810116984 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(802, -482)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box15" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box15" parent="Boxes" unique_id=1444306217 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(670, -480)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box17" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box17" parent="Boxes" unique_id=2074982553 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(606, -483)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Box18" parent="Boxes" node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
+[node name="Box18" parent="Boxes" unique_id=1691886594 node_paths=PackedStringArray("tilemap") instance=ExtResource("2_4wyf3")]
 position = Vector2(-353, 1120)
 tilemap = NodePath("../../TileMapLayer")
 
-[node name="Player" parent="." node_paths=PackedStringArray("tilemap", "game_manager") instance=ExtResource("3_k0juu")]
+[node name="Player" parent="." unique_id=2000411093 node_paths=PackedStringArray("tilemap", "game_manager") instance=ExtResource("3_k0juu")]
 position = Vector2(226, 224)
 tilemap = NodePath("../TileMapLayer")
 game_manager = NodePath("../GameManager")
 
-[node name="Window" type="Window" parent="."]
+[node name="Window" type="Window" parent="." unique_id=733005291]
 transparent_bg = true
+oversampling_override = 1.0
 size = Vector2i(256, 256)
 unresizable = true
 borderless = true
 always_on_top = true
 transparent = true
 
-[node name="Camera2D" type="Camera2D" parent="Window"]
+[node name="Camera2D" type="Camera2D" parent="Window" unique_id=767910795]
 position = Vector2(254, 258)
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1244848298]
 transparent_bg = true
 snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(2048, 2048)
 
-[node name="Window2" type="Window" parent="SubViewport"]
+[node name="Window2" type="Window" parent="SubViewport" unique_id=1379546716]
 auto_translate_mode = 1
 transparent_bg = true
+oversampling_override = 1.0
 size = Vector2i(256, 256)
 unresizable = true
 borderless = true
 always_on_top = true
 transparent = true
 
-[node name="Camera2D" type="Camera2D" parent="SubViewport/Window2"]
+[node name="Camera2D" type="Camera2D" parent="SubViewport/Window2" unique_id=820402927]
 position = Vector2(224, 736)
 script = ExtResource("7_7r4gi")
 
-[node name="SubViewport2" type="SubViewport" parent="."]
+[node name="SubViewport2" type="SubViewport" parent="." unique_id=417629559]
 transparent_bg = true
 snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(2048, 2048)
 
-[node name="Window2" type="Window" parent="SubViewport2"]
+[node name="Window2" type="Window" parent="SubViewport2" unique_id=1104406477]
 auto_translate_mode = 1
 transparent_bg = true
+oversampling_override = 1.0
 size = Vector2i(256, 256)
 unresizable = true
 borderless = true
 always_on_top = true
 transparent = true
 
-[node name="Camera2D" type="Camera2D" parent="SubViewport2/Window2"]
+[node name="Camera2D" type="Camera2D" parent="SubViewport2/Window2" unique_id=1105806940]
 position = Vector2(-32, -288)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=254481378]
 visible = false
 
-[node name="Label" type="Label" parent="CanvasLayer" node_paths=PackedStringArray("game_manager")]
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=1979517306 node_paths=PackedStringArray("game_manager")]
 visible = false
 offset_left = 56.0
 offset_top = 176.0
@@ -204,12 +242,12 @@ horizontal_alignment = 1
 script = ExtResource("8_4mrxx")
 game_manager = NodePath("../../GameManager")
 
-[node name="Label2" type="Label" parent="CanvasLayer"]
+[node name="Label2" type="Label" parent="CanvasLayer" unique_id=1321161265]
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("9_7r4gi")
 
-[node name="StartButton" type="Button" parent="CanvasLayer"]
+[node name="StartButton" type="Button" parent="CanvasLayer" unique_id=1412047652]
 custom_minimum_size = Vector2(71, 0)
 offset_left = 361.0
 offset_top = 362.0
@@ -219,7 +257,7 @@ theme_override_font_sizes/font_size = 32
 text = "Click here to start"
 autowrap_mode = 3
 
-[node name="Button" type="Button" parent="CanvasLayer"]
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=2033139746]
 offset_right = 8.0
 offset_bottom = 8.0
 text = "Restart"

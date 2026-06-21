@@ -4,30 +4,21 @@ extends Node2D
 @onready var _SubWindow: Window = $Window
 @onready var camera_2d: Camera2D = $Window/Camera2D
 @onready var player: PlayerController = $Player
-@onready var _Subwindow_2: Window = $SubViewport/Window2
-@onready var camera_2d_2: Camera2D = $SubViewport/Window2/Camera2D
-@onready var _Subwindow_3: Window = $SubViewport2/Window2
-@onready var start_button: Button = $CanvasLayer/StartButton
+@onready var _SubWindow_2: Window = $Window2
+@onready var camera_2d_2: Camera2D = $Window2/Camera2D
+@onready var game_manager: GameManager = $GameManager
+@onready var ui_layer: CanvasLayer = $UI
 
 var _needs_window_update: bool = false
 var _last_main_window_pos: Vector2i
 var _was_minimized: bool = false
 
 
-func _ready():
-	var language = "zh"
-	if language == "zh":
-		var preferred_language = OS.get_locale_language()
-		TranslationServer.set_locale(preferred_language)
-	else:
-		TranslationServer.set_locale(language)
-	ProjectSettings.set_setting("display/window/per_pixel_transparency/allowed", true)
-
+func _ready() -> void:
 	_SubWindow.world_2d = _MainWindow.world_2d
-	_Subwindow_2.world_2d = _MainWindow.world_2d
-	_Subwindow_3.world_2d = _MainWindow.world_2d
-
+	_SubWindow_2.world_2d = _MainWindow.world_2d
 	_MainWindow.transparent_bg = true
+	_MainWindow.maximize_disabled = true
 
 	# 玩家移动时更新窗口位置（信号驱动，不再每帧轮询）
 	player.player_moved.connect(_on_player_moved)
@@ -35,12 +26,14 @@ func _ready():
 	# 在帧渲染完成后移动窗口，确保内容已更新再移动
 	RenderingServer.frame_post_draw.connect(_on_frame_post_draw)
 
-	# 初始化所有窗口位置
+	# 通关检测
+	game_manager.youwin.connect(_on_win)
+
+	# 初始化窗口位置
 	_update_subwindow()
 	_update_static_windows()
 	_last_main_window_pos = _MainWindow.position
-	
-	_MainWindow.grab_focus()
+
 
 func _process(_delta: float) -> void:
 	# 主窗口被拖动时更新子窗口位置
@@ -55,18 +48,18 @@ func _process(_delta: float) -> void:
 		_was_minimized = is_minimized
 		if is_minimized:
 			_SubWindow.hide()
-			_Subwindow_2.hide()
-			_Subwindow_3.hide()
+			_SubWindow_2.hide()
 		else:
 			_SubWindow.show()
-			_Subwindow_2.show()
-			_Subwindow_3.show()
+			_SubWindow_2.show()
 			_update_subwindow()
 			_update_static_windows()
 
 
 func _on_player_moved(_new_position: Vector2) -> void:
+	# 更新摄像机位置（立即，确保当前帧渲染正确内容）
 	_update_camera()
+	# 延迟到帧渲染完成后移动窗口
 	_needs_window_update = true
 
 
@@ -86,9 +79,17 @@ func _update_subwindow() -> void:
 
 
 func _update_static_windows() -> void:
-	_Subwindow_2.position = Vector2(_MainWindow.position) + Vector2(96, 608)
-	_Subwindow_3.position = Vector2(_MainWindow.position) - Vector2(160, 416)
+	_SubWindow_2.position = Vector2(_MainWindow.position) + (camera_2d_2.position - Vector2(_SubWindow_2.size) / 2)
 
 
-func _on_start_button_pressed() -> void:
-	start_button.hide()
+## 通关：显示 UI，取消摄像机窗口置顶
+func _on_win() -> void:
+	ui_layer.visible = true
+	_SubWindow.always_on_top = false
+	_MainWindow.grab_focus()
+	#_SubWindow_2.always_on_top = false
+
+
+## 进入下一关
+func _on_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/world.tscn")

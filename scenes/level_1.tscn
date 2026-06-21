@@ -1,0 +1,168 @@
+[gd_scene format=4 uid="uid://v44sxsx2aqhi"]
+
+[ext_resource type="Script" uid="uid://2r0n6rbnkgqp" path="res://scripts/level_1.gd" id="1_4nkto"]
+[ext_resource type="Script" uid="uid://xmatcc31kd6y" path="res://scripts/game_manager.gd" id="1_rus8k"]
+[ext_resource type="Texture2D" uid="uid://dmyeskugq5bgu" path="res://assets/sokoban_tilesheet.png" id="2_5xbjy"]
+[ext_resource type="PackedScene" uid="uid://ding5puft18qs" path="res://scenes/player.tscn" id="3_4nkto"]
+[ext_resource type="PackedScene" uid="uid://chuove4bsq6oy" path="res://scenes/box.tscn" id="3_5xbjy"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fcfvj"]
+texture = ExtResource("2_5xbjy")
+24:24/size_in_atlas = Vector2i(4, 4)
+24:24/0 = 0
+24:24/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+24:24/0/custom_data_0 = 1
+28:24/size_in_atlas = Vector2i(4, 4)
+28:24/0 = 0
+28:24/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+28:24/0/custom_data_0 = 1
+32:24/size_in_atlas = Vector2i(4, 4)
+32:24/0 = 0
+32:24/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+32:24/0/custom_data_0 = 1
+36:24/size_in_atlas = Vector2i(4, 4)
+36:24/0 = 0
+36:24/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+36:24/0/custom_data_0 = 1
+40:24/size_in_atlas = Vector2i(4, 4)
+40:24/0 = 0
+44:24/size_in_atlas = Vector2i(4, 4)
+44:24/0 = 0
+48:24/size_in_atlas = Vector2i(4, 4)
+48:24/0 = 0
+40:28/size_in_atlas = Vector2i(4, 4)
+40:28/0 = 0
+40:28/0/custom_data_0 = -1
+44:28/size_in_atlas = Vector2i(4, 4)
+44:28/0 = 0
+44:28/0/custom_data_0 = -1
+48:28/size_in_atlas = Vector2i(4, 4)
+48:28/0 = 0
+48:28/0/custom_data_0 = -1
+
+[sub_resource type="TileSet" id="TileSet_pa8r4"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 3
+custom_data_layer_0/name = "type"
+custom_data_layer_0/type = 2
+sources/0 = SubResource("TileSetAtlasSource_fcfvj")
+
+[sub_resource type="GDScript" id="GDScript_15mv3"]
+script/source = "extends TileMapLayer
+
+enum CellType { FLOOR = 0, WALL = 1, TARGET = -1 }
+
+const tile_size: Vector2 = Vector2(64, 64)
+
+# 根据世界坐标获取单元格类型
+func get_cell_type(world_pos: Vector2) -> int:
+	var map_pos = local_to_map(world_pos)
+	var data = get_cell_tile_data(map_pos)  # 假设自定义数据在第0层
+	
+	if data:
+		return data.get_custom_data(\"type\")
+	return CellType.WALL
+
+# 检查是否为墙
+func is_wall(world_pos: Vector2) -> bool:
+	return get_cell_type(world_pos) == CellType.WALL
+
+# 检查是否为目标点
+func is_target(world_pos: Vector2) -> bool:
+	return get_cell_type(world_pos) == CellType.TARGET
+
+# 获取所有目标点位置（世界坐标）
+func get_all_target_positions() -> Array:
+	var targets = []
+	var used_cells = get_used_cells()  # 获取第0层所有已用单元格
+	
+	for cell in used_cells:
+		if get_cell_type(map_to_local(cell)) == CellType.TARGET:
+			targets.append(map_to_local(cell) + tile_size / 2)
+	
+	return targets
+"
+
+[node name="Level1" type="Node2D" unique_id=1804412390]
+script = ExtResource("1_4nkto")
+
+[node name="GameManager" type="Node" parent="." unique_id=1864456492]
+script = ExtResource("1_rus8k")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2087473732]
+position = Vector2(0, -2)
+tile_map_data = PackedByteArray("AAAAAAAAAAAkABgAAAAAAAEAAAAoABgAAAAAAAYAAAAkABgAAAABAAAAAAAkABgAAAABAAEAAAAoABgAAAABAAIAAAAoABgAAAABAAMAAAAoABgAAAABAAQAAAAoABgAAAABAAUAAAAoABgAAAABAAYAAAAkABgAAAACAAAAAAAkABgAAAACAAEAAAAoABgAAAACAAIAAAAoABgAAAACAAMAAAAoABgAAAACAAQAAAAoABgAAAACAAUAAAAoABgAAAACAAYAAAAkABgAAAADAAAAAAAkABgAAAADAAEAAAAoABgAAAADAAIAAAAoABgAAAADAAMAAAAoABgAAAADAAQAAAAoABgAAAADAAUAAAAoABgAAAADAAYAAAAkABgAAAAEAAAAAAAkABgAAAAEAAQAAAAoABgAAAAEAAUAAAAoABgAAAAEAAYAAAAkABgAAAAFAAAAAAAkABgAAAAFAAIAAAAoABgAAAAFAAMAAAAoABgAAAAFAAQAAAAoABgAAAAFAAUAAAAoABgAAAAFAAYAAAAkABgAAAAGAAAAAAAkABgAAAAGAAYAAAAkABgAAAAHAAAAAAAkABgAAAD//wAAAAAkABgAAAD+/wAAAAAkABgAAAD9/wAAAAAkABgAAAD8/wAAAAAkABgAAAD7/wAAAAAkABgAAAD6/wAAAAAkABgAAAD5/wAAAAAkABgAAAD5/wEAAAAkABgAAAD5/wIAAAAkABgAAAD5/wMAAAAkABgAAAD5/wQAAAAkABgAAAD5/wUAAAAkABgAAAD5/wYAAAAkABgAAAD6/wYAAAAkABgAAAD7/wYAAAAkABgAAAD8/wYAAAAkABgAAAD9/wYAAAAkABgAAAD+/wYAAAAkABgAAAD//wYAAAAkABgAAAAIAAAAAAAkABgAAAAJAAAAAAAkABgAAAAKAAAAAAAkABgAAAALAAAAAAAkABgAAAAMAAAAAAAkABgAAAANAAAAAAAkABgAAAAOAAAAAAAkABgAAAAOAAEAAAAkABgAAAAOAAIAAAAkABgAAAAOAAMAAAAkABgAAAAOAAQAAAAkABgAAAAOAAUAAAAkABgAAAAOAAYAAAAkABgAAAANAAYAAAAkABgAAAAMAAYAAAAkABgAAAALAAYAAAAkABgAAAAKAAYAAAAkABgAAAAJAAYAAAAkABgAAAAIAAYAAAAkABgAAAAHAAYAAAAkABgAAAD//wEAAAAkABgAAAD6/wEAAAAkABgAAAD7/wIAAAAoABgAAAD8/wIAAAAoABgAAAD9/wMAAAAoABgAAAD+/wMAAAAoABgAAAD//wMAAAAoABgAAAD6/wIAAAAoABgAAAD6/wMAAAAoABgAAAD6/wQAAAAoABgAAAD6/wUAAAAkABgAAAD7/wEAAAAkABgAAAD7/wMAAAAoABgAAAD7/wQAAAAoABgAAAD7/wUAAAAkABgAAAD8/wEAAAAkABgAAAD8/wMAAAAoABgAAAD8/wQAAAAoABgAAAD8/wUAAAAkABgAAAD9/wEAAAAkABgAAAD9/wIAAAAoABgAAAD9/wQAAAAoABgAAAD9/wUAAAAkABgAAAD+/wEAAAAkABgAAAD+/wIAAAAoABgAAAD+/wQAAAAoABgAAAD+/wUAAAAkABgAAAD//wIAAAAoABgAAAD//wQAAAAoABgAAAD//wUAAAAkABgAAAAAAAIAAAAoABgAAAAAAAMAAAAoABgAAAAAAAQAAAAoABgAAAAAAAUAAAAoABgAAAAEAAEAAAAoABgAAAAEAAIAAAAoABgAAAAEAAMAAAAoABwAAAAFAAEAAAAoABgAAAAGAAEAAAAoABgAAAAGAAIAAAAoABgAAAAGAAMAAAAoABgAAAAGAAQAAAAoABgAAAAGAAUAAAAoABgAAAAHAAEAAAAkABgAAAAHAAIAAAAoABgAAAAHAAMAAAAoABgAAAAHAAQAAAAoABgAAAAIAAEAAAAkABgAAAAIAAIAAAAkABgAAAAIAAMAAAAkABgAAAAIAAQAAAAoABgAAAAIAAUAAAAoABgAAAAJAAEAAAAkABgAAAAJAAIAAAAkABgAAAAJAAMAAAAoABgAAAAJAAQAAAAoABgAAAAKAAEAAAAkABgAAAAKAAIAAAAoABgAAAAKAAMAAAAoABgAAAAKAAQAAAAoABgAAAAKAAUAAAAkABgAAAALAAEAAAAoABgAAAALAAIAAAAoABgAAAALAAMAAAAoABwAAAALAAQAAAAoABgAAAALAAUAAAAoABgAAAAMAAEAAAAkABgAAAAMAAIAAAAoABgAAAAMAAMAAAAoABgAAAAMAAQAAAAoABgAAAAMAAUAAAAkABgAAAANAAEAAAAkABgAAAANAAIAAAAkABgAAAANAAMAAAAoABgAAAANAAQAAAAkABgAAAANAAUAAAAkABgAAAAJAAUAAAAoABgAAAAHAAUAAAAoABgAAAA=")
+tile_set = SubResource("TileSet_pa8r4")
+script = SubResource("GDScript_15mv3")
+
+[node name="Boxes" type="Node2D" parent="." unique_id=1247528476]
+
+[node name="Box" parent="Boxes" unique_id=312721522 node_paths=PackedStringArray("tilemap") instance=ExtResource("3_5xbjy")]
+position = Vector2(736, 224)
+tilemap = NodePath("../../TileMapLayer")
+
+[node name="Box2" parent="Boxes" unique_id=1482188241 node_paths=PackedStringArray("tilemap") instance=ExtResource("3_5xbjy")]
+position = Vector2(-288, 224)
+tilemap = NodePath("../../TileMapLayer")
+
+[node name="Player" parent="." unique_id=2008164205 node_paths=PackedStringArray("tilemap", "game_manager") instance=ExtResource("3_4nkto")]
+position = Vector2(-64, 224)
+tilemap = NodePath("../TileMapLayer")
+game_manager = NodePath("../GameManager")
+
+[node name="Window" type="Window" parent="." unique_id=736429858]
+transparent_bg = true
+oversampling_override = 1.0
+title = "我是摄像机窗口"
+size = Vector2i(256, 256)
+unresizable = true
+borderless = true
+always_on_top = true
+transparent = true
+
+[node name="Camera2D" type="Camera2D" parent="Window" unique_id=1511895817]
+
+[node name="Window2" type="Window" parent="." unique_id=65330729]
+transparent_bg = true
+oversampling_override = 1.0
+title = "将箱子放在目标格子"
+size = Vector2i(256, 256)
+unresizable = true
+borderless = true
+always_on_top = true
+transparent = true
+
+[node name="Camera2D" type="Camera2D" parent="Window2" unique_id=23277873]
+position = Vector2(736, 224)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1380766941]
+visible = false
+
+[node name="Control" type="Control" parent="UI" unique_id=2026635516]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="UI/Control" unique_id=376111629]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.0
+offset_top = -15.5
+offset_right = 28.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "下一关"
+
+[connection signal="pressed" from="UI/Control/Button" to="." method="_on_button_pressed"]

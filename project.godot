@@ -10,12 +10,12 @@ config_version=5
 
 [application]
 
-config/name="Sokoban"
+config/name="Sokoban(点我进行拖拽)"
 config/description="见README.md"
 config/version="0.06"
 config/tags=PackedStringArray("2d", "finished", "puzzle")
-run/main_scene="uid://do7fx0f2ay70x"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+run/main_scene="uid://v44sxsx2aqhi"
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -27,6 +27,7 @@ Records="*res://scripts/records.gd"
 window/size/viewport_width=512
 window/size/viewport_height=512
 window/size/resizable=false
+window/size/extend_to_title=true
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
