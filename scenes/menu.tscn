@@ -52,3 +52,5 @@ wrap_mode = 1
 [node name="SaveMemoButton" type="Button" parent="TabContainer/备忘录"]
 layout_mode = 2
 text = "保存备忘录"
+
+[connection signal="pressed" from="TabContainer/备忘录/SaveMemoButton" to="." method="_on_save_memo_pressed"]
