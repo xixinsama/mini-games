@@ -79,10 +79,12 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 			{"role": "system", "content": system_prompt},
 			{"role": "user", "content": user_text}
 		],
-		"thinking": {"type": "enabled"},
 		"reasoning_effort": config.get("reasoning_effort", "high"),
 		"stream": false
 	}
+
+	if config.get("thinking", false):
+		body["thinking"] = {"type": "enabled"}
 
 	var headers = [
 		"Content-Type: application/json",

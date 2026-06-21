@@ -16,6 +16,7 @@ func _on_ai_response(response: String):
 
 func _on_ai_error(error_msg: String):
 	print("AI Error: ", error_msg)
+	dialogue.visible_characters = -1
 	dialogue.text = "唔...奶龙走神了~ 等下再说吧！"
 
 func animate_text(text: String):

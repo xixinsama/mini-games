@@ -55,8 +55,8 @@ func _ready():
 	quit_button.pressed.connect(_on_quit_button_pressed)
 	send_button.pressed.connect(_on_send_button_pressed)
 	save_memo_button.pressed.connect(_on_save_memo_pressed)
-	text_edit.text_changed.connect(_on_text_changed)
 	DeepSeekClient.error_occurred.connect(_on_ai_error)
+	MemoManager.memo_updated.connect(_refresh_memo_display)
 
 	# Initialize random wander
 	target_position = get_random_screen_position()
@@ -171,9 +171,6 @@ func _on_drag_area_input(_viewport, event, _shape_idx):
 
 func toggle_menu():
 	menu.visible = !menu.visible
-	# Refresh memo display when opening menu
-	if menu.visible:
-		_refresh_memo_display()
 
 	var screen_size = get_viewport_rect().size
 	if menu.position.x + menu.size.x > screen_size.x:
@@ -181,9 +178,6 @@ func toggle_menu():
 	if menu.position.y + menu.size.y > screen_size.y:
 		menu.position.y = screen_size.y - menu.size.y
 
-
-func _on_text_changed() -> void:
-	pass  # No longer auto-save on text change
 
 
 func _on_send_button_pressed() -> void:
@@ -210,7 +204,6 @@ func _on_save_memo_pressed() -> void:
 		if not stripped.is_empty():
 			MemoManager.add_memo(stripped, "")
 	memo_text_edit.text = ""
-	_refresh_memo_display()
 	print("Memo saved!")
 
 

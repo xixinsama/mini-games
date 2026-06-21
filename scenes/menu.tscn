@@ -29,14 +29,12 @@ layout_mode = 2
 text = "模型: deepseek-v4-pro"
 
 [node name="TextEdit" type="TextEdit" parent="TabContainer/对话"]
-visible = false
 custom_minimum_size = Vector2(120, 200)
 layout_mode = 2
 placeholder_text = "在这里写小作文……"
 wrap_mode = 1
 
 [node name="SendButton" type="Button" parent="TabContainer/对话"]
-visible = false
 layout_mode = 2
 text = "发送"
 
