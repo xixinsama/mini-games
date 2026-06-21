@@ -8,6 +8,7 @@ var http_request: HTTPRequest
 var config: Dictionary = {}
 var response_cache: Dictionary = {}
 var is_requesting: bool = false
+var _current_cache_key: String = ""
 
 func _ready() -> void:
 	http_request = HTTPRequest.new()
@@ -66,6 +67,7 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 	var system_prompt = PersonaManager.build_system_prompt(trigger_type, context)
 
 	var cache_key = (system_prompt + user_text).sha256_text()
+	_current_cache_key = cache_key
 	if cache_key in response_cache:
 		print("Cache hit!")
 		response_received.emit(response_cache[cache_key])
@@ -97,6 +99,11 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 
 func _on_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	is_requesting = false
+
+	if _result != HTTPRequest.RESULT_SUCCESS:
+		error_occurred.emit("Network error: " + str(_result))
+		return
+
 	var body_str = body.get_string_from_utf8()
 
 	if response_code != 200:
@@ -126,8 +133,7 @@ func _on_request_completed(_result: int, response_code: int, _headers: PackedStr
 		content = content.substr(think_end + 8).strip_edges()
 
 	# Cache the response
-	var system_prompt = PersonaManager.build_system_prompt("chat", {})
-	var cache_key = (system_prompt + "").sha256_text()
-	response_cache[cache_key] = content
+	if not _current_cache_key.is_empty():
+		response_cache[_current_cache_key] = content
 
 	response_received.emit(content)
