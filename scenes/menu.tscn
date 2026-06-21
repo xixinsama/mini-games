@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://nnparptdroct"]
+
+[node name="menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="对话" type="VBoxContainer" parent="TabContainer"]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="TabContainer/对话"]
+layout_mode = 2
+text = "退出
+"
+
+[node name="ModelLabel" type="Label" parent="TabContainer/对话"]
+layout_mode = 2
+text = "模型: deepseek-v4-pro"
+
+[node name="TextEdit" type="TextEdit" parent="TabContainer/对话"]
+visible = false
+custom_minimum_size = Vector2(120, 200)
+layout_mode = 2
+placeholder_text = "在这里写小作文……"
+wrap_mode = 1
+
+[node name="SendButton" type="Button" parent="TabContainer/对话"]
+visible = false
+layout_mode = 2
+text = "发送"
+
+[node name="备忘录" type="VBoxContainer" parent="TabContainer"]
+layout_mode = 2
+
+[node name="MemoTextEdit" type="TextEdit" parent="TabContainer/备忘录"]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 2
+placeholder_text = "在这里写备忘..."
+wrap_mode = 1
+
+[node name="SaveMemoButton" type="Button" parent="TabContainer/备忘录"]
+layout_mode = 2
+text = "保存备忘录"
