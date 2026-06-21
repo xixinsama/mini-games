@@ -155,13 +155,11 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 		"stream": false
 	}
 
-	# reasoning_effort: DeepSeek-specific, harmless for OpenAI
-	if config.has("reasoning_effort") and not config["reasoning_effort"].is_empty():
-		body["reasoning_effort"] = config["reasoning_effort"]
-
-	# thinking: DeepSeek-only, only send when enabled
+	# reasoning_effort + thinking: DeepSeek-specific, skip for OpenAI to avoid API errors
 	if config.get("thinking", false):
 		body["thinking"] = {"type": "enabled"}
+		if config.has("reasoning_effort") and not config["reasoning_effort"].is_empty():
+			body["reasoning_effort"] = config["reasoning_effort"]
 
 	var headers = [
 		"Content-Type: application/json",

@@ -20,6 +20,7 @@ var config_dialog: AcceptDialog
 var config_api_key_input: LineEdit
 var config_model_input: LineEdit
 var config_base_url_input: LineEdit
+var config_thinking_check: CheckBox
 
 # Drag state
 var is_dragging: bool = false
@@ -114,6 +115,11 @@ func _build_config_dialog():
 	config_base_url_input.placeholder_text = "https://api.deepseek.com"
 	vbox.add_child(config_base_url_input)
 
+	# Thinking toggle (DeepSeek only)
+	config_thinking_check = CheckBox.new()
+	config_thinking_check.text = "启用 Thinking 模式 (仅 DeepSeek)"
+	vbox.add_child(config_thinking_check)
+
 	# Preset buttons
 	var preset_hbox = HBoxContainer.new()
 	vbox.add_child(preset_hbox)
@@ -135,11 +141,13 @@ func _build_config_dialog():
 func _on_preset_deepseek():
 	config_model_input.text = "deepseek-v4-pro"
 	config_base_url_input.text = "https://api.deepseek.com"
+	config_thinking_check.button_pressed = true
 
 
 func _on_preset_openai():
 	config_model_input.text = "gpt-4o"
 	config_base_url_input.text = "https://api.openai.com/v1"
+	config_thinking_check.button_pressed = false
 
 
 func _on_settings_pressed():
@@ -147,6 +155,7 @@ func _on_settings_pressed():
 	config_api_key_input.text = cfg.get("api_key", "")
 	config_model_input.text = cfg.get("model", "deepseek-v4-pro")
 	config_base_url_input.text = cfg.get("base_url", "https://api.deepseek.com")
+	config_thinking_check.button_pressed = cfg.get("thinking", true)
 	config_dialog.popup_centered()
 
 
@@ -155,7 +164,7 @@ func _on_config_save():
 		"api_key": config_api_key_input.text.strip_edges(),
 		"model": config_model_input.text.strip_edges(),
 		"base_url": config_base_url_input.text.strip_edges().rstrip("/"),
-		"thinking": true,
+		"thinking": config_thinking_check.button_pressed,
 		"reasoning_effort": "high"
 	}
 	DeepSeekClient.save_config(new_config)
