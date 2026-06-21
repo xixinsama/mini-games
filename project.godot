@@ -18,9 +18,11 @@ config/tags=PackedStringArray("2d", "ai", "demo")
 
 [autoload]
 
-ClickThrough="*res://脚本/click_through.cs"
-DetectPassThrough="*res://脚本/detect_pass_through.gd"
-OllamaClient="*res://脚本/ollama_client.gd"
+ClickThrough="*res://scripts/click_through.cs"
+DetectPassThrough="*res://scripts/detect_pass_through.gd"
+DeepSeekClient="*res://scripts/deepseek_client.gd"
+MemoManager="*res://scripts/memo_manager.gd"
+PersonaManager="*res://scripts/persona_manager.gd"
 
 [display]
 
