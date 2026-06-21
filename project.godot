@@ -11,16 +11,18 @@ config_version=5
 [application]
 
 config/name="全能桌面宠物"
-run/main_scene="uid://bh6tj3etivbmw"
-config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
 config/tags=PackedStringArray("2d", "ai", "demo")
+run/main_scene="uid://bh6tj3etivbmw"
+config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
+config/icon="res://icon.svg"
 
 [autoload]
 
-ClickThrough="*res://脚本/click_through.cs"
-DetectPassThrough="*res://脚本/detect_pass_through.gd"
-OllamaClient="*res://脚本/ollama_client.gd"
+ClickThrough="*res://scripts/click_through.cs"
+DetectPassThrough="*res://scripts/detect_pass_through.gd"
+DeepSeekClient="*res://scripts/deepseek_client.gd"
+MemoManager="*res://scripts/memo_manager.gd"
+PersonaManager="*res://scripts/persona_manager.gd"
 
 [display]
 
