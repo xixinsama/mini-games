@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://nnparptdroct"]
 
-[node name="menu" type="Control"]
+[node name="menu" type="Control" unique_id=1390817022]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -8,45 +8,60 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="."]
-layout_mode = 0
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TabContainer" type="TabContainer" parent="." unique_id=78581391]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.5
+offset_top = -164.0
+offset_right = 84.5
+offset_bottom = 164.0
 grow_horizontal = 2
 grow_vertical = 2
+current_tab = 0
 
-[node name="对话" type="VBoxContainer" parent="TabContainer"]
+[node name="对话" type="VBoxContainer" parent="TabContainer" unique_id=1431839993]
 layout_mode = 2
+metadata/_tab_index = 0
 
-[node name="QuitButton" type="Button" parent="TabContainer/对话"]
+[node name="QuitButton" type="Button" parent="TabContainer/对话" unique_id=511454910]
 layout_mode = 2
 text = "退出
 "
 
-[node name="ModelLabel" type="Label" parent="TabContainer/对话"]
+[node name="ModelLabel" type="Label" parent="TabContainer/对话" unique_id=467744216]
 layout_mode = 2
 text = "模型: deepseek-v4-pro"
 
-[node name="TextEdit" type="TextEdit" parent="TabContainer/对话"]
+[node name="SettingsButton" type="Button" parent="TabContainer/对话" unique_id=3107729485]
+layout_mode = 2
+text = "设置"
+
+[node name="TextEdit" type="TextEdit" parent="TabContainer/对话" unique_id=1830261291]
 custom_minimum_size = Vector2(120, 200)
 layout_mode = 2
 placeholder_text = "在这里写小作文……"
 wrap_mode = 1
 
-[node name="SendButton" type="Button" parent="TabContainer/对话"]
+[node name="SendButton" type="Button" parent="TabContainer/对话" unique_id=1054304287]
 layout_mode = 2
 text = "发送"
 
-[node name="备忘录" type="VBoxContainer" parent="TabContainer"]
+[node name="备忘录" type="VBoxContainer" parent="TabContainer" unique_id=973615926]
+visible = false
 layout_mode = 2
+theme_override_constants/separation = 6
+metadata/_tab_index = 1
 
-[node name="MemoTextEdit" type="TextEdit" parent="TabContainer/备忘录"]
-custom_minimum_size = Vector2(120, 150)
+[node name="MemoTextEdit" type="TextEdit" parent="TabContainer/备忘录" unique_id=1642523871]
+custom_minimum_size = Vector2(120, 252)
 layout_mode = 2
 placeholder_text = "在这里写备忘..."
 wrap_mode = 1
 
-[node name="SaveMemoButton" type="Button" parent="TabContainer/备忘录"]
+[node name="SaveMemoButton" type="Button" parent="TabContainer/备忘录" unique_id=127471907]
 layout_mode = 2
 text = "保存备忘录"

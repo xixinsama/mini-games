@@ -1,8 +1,9 @@
 extends Node
-## DeepSeekClient - Communicates with DeepSeek API via HTTPRequest
+## DeepSeekClient - OpenAI-compatible API client (DeepSeek / OpenAI ChatGPT)
 
 signal response_received(message: String)
 signal error_occurred(message: String)
+signal config_loaded(success: bool)
 
 var http_request: HTTPRequest
 var config: Dictionary = {}
@@ -10,38 +11,104 @@ var response_cache: Dictionary = {}
 var is_requesting: bool = false
 var _current_cache_key: String = ""
 
+
+func _get_config_path() -> String:
+	if OS.has_feature("editor"):
+		return "res://deepseek_config.json"
+	var exe_dir = OS.get_executable_path().get_base_dir()
+	return exe_dir.path_join("deepseek_config.json")
+
+
+func _get_example_path() -> String:
+	if OS.has_feature("editor"):
+		return "res://deepseek_config.example.json"
+	var exe_dir = OS.get_executable_path().get_base_dir()
+	return exe_dir.path_join("deepseek_config.example.json")
+
+
 func _ready() -> void:
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(_on_request_completed)
 	_load_config()
 
+
 func _load_config() -> void:
-	var file = FileAccess.open("res://deepseek_config.json", FileAccess.READ)
+	var path = _get_config_path()
+	var file = FileAccess.open(path, FileAccess.READ)
 	if file:
 		var json = JSON.new()
 		var error = json.parse(file.get_as_text())
 		file.close()
 		if error == OK:
 			config = json.get_data()
-			print("DeepSeek config loaded, model: ", config.get("model", "unknown"))
+			print("Config loaded: ", path, ", model: ", config.get("model", "unknown"))
+			_emit_config_status()
+			return
 		else:
-			push_error("Failed to parse deepseek_config.json")
-			config = {}
+			push_error("Failed to parse config: " + json.get_error_message())
+
+	# Config missing - copy from example
+	print("Config not found: ", path, ". Copying from example...")
+	var example_path = _get_example_path()
+	var example_file = FileAccess.open(example_path, FileAccess.READ)
+	if example_file:
+		var content = example_file.get_as_text()
+		example_file.close()
+		var write_file = FileAccess.open(path, FileAccess.WRITE)
+		if write_file:
+			write_file.store_string(content)
+			write_file.close()
+			print("Copied example config to: ", path)
+		var json = JSON.new()
+		if json.parse(content) == OK:
+			config = json.get_data()
 	else:
-		push_error("deepseek_config.json not found! Please create it from the template.")
+		push_error("No config or example found.")
+		config = {}
+
+	_emit_config_status()
+
+
+func _emit_config_status():
+	var key = config.get("api_key", "")
+	if key.is_empty() or key.begins_with("sk-your-"):
+		config_loaded.emit(false)
+	else:
+		config_loaded.emit(true)
+
+
+func save_config(new_config: Dictionary) -> void:
+	config = new_config
+	var path = _get_config_path()
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(config, "\t"))
+		file.close()
+		print("Config saved: ", path)
+	else:
+		push_error("Failed to save config: " + path)
+
+
+func get_config() -> Dictionary:
+	return config.duplicate()
+
 
 func _get_api_key() -> String:
 	return config.get("api_key", "")
 
+
 func _get_base_url() -> String:
 	return config.get("base_url", "https://api.deepseek.com")
+
 
 func _get_model() -> String:
 	return config.get("model", "deepseek-v4-pro")
 
+
 func send_message(user_text: String) -> void:
 	_send_request("chat", user_text, {})
+
 
 func send_system_trigger(trigger_type: String, context: Dictionary = {}) -> void:
 	var user_prompt = ""
@@ -59,9 +126,15 @@ func send_system_trigger(trigger_type: String, context: Dictionary = {}) -> void
 			user_prompt = ""
 	_send_request(trigger_type, user_prompt, context)
 
+
 func _send_request(trigger_type: String, user_text: String, context: Dictionary) -> void:
 	if is_requesting:
 		print("Already requesting, skipping")
+		return
+
+	var api_key = _get_api_key()
+	if api_key.is_empty() or api_key.begins_with("sk-your-"):
+		error_occurred.emit("请先设置 API Key~ 右键菜单 -> 设置")
 		return
 
 	var system_prompt = PersonaManager.build_system_prompt(trigger_type, context)
@@ -73,22 +146,26 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 		response_received.emit(response_cache[cache_key])
 		return
 
-	var body = {
+	var body: Dictionary = {
 		"model": _get_model(),
 		"messages": [
 			{"role": "system", "content": system_prompt},
 			{"role": "user", "content": user_text}
 		],
-		"reasoning_effort": config.get("reasoning_effort", "high"),
 		"stream": false
 	}
 
+	# reasoning_effort: DeepSeek-specific, harmless for OpenAI
+	if config.has("reasoning_effort") and not config["reasoning_effort"].is_empty():
+		body["reasoning_effort"] = config["reasoning_effort"]
+
+	# thinking: DeepSeek-only, only send when enabled
 	if config.get("thinking", false):
 		body["thinking"] = {"type": "enabled"}
 
 	var headers = [
 		"Content-Type: application/json",
-		"Authorization: Bearer " + _get_api_key()
+		"Authorization: Bearer " + api_key
 	]
 
 	var url = _get_base_url() + "/chat/completions"
@@ -97,7 +174,8 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
 	if error != OK:
 		is_requesting = false
-		error_occurred.emit("Request failed with error: " + str(error))
+		error_occurred.emit("Request failed: " + str(error))
+
 
 func _on_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	is_requesting = false
@@ -123,18 +201,17 @@ func _on_request_completed(_result: int, response_code: int, _headers: PackedStr
 
 	var data = json.get_data()
 	if data == null or not data.has("choices") or data["choices"].size() == 0:
-		error_occurred.emit("Unexpected response format: " + body_str.substr(0, 200))
+		error_occurred.emit("Unexpected response: " + body_str.substr(0, 200))
 		return
 
 	var message = data["choices"][0].get("message", {})
 	var content = message.get("content", "")
 
-	# Extract content after </think> if present (thinking mode)
+	# Strip </think> tag if present (DeepSeek thinking mode)
 	var think_end = content.find("</think>")
 	if think_end != -1:
 		content = content.substr(think_end + 8).strip_edges()
 
-	# Cache the response
 	if not _current_cache_key.is_empty():
 		response_cache[_current_cache_key] = content
 
