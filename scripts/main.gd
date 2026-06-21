@@ -135,8 +135,6 @@ func _build_config_dialog():
 	preset_hbox.add_child(openai_btn)
 
 	config_dialog.confirmed.connect(_on_config_save)
-	config_dialog.custom_minimum_size = Vector2(340, 0)
-
 
 func _on_preset_deepseek():
 	config_model_input.text = "deepseek-v4-pro"
