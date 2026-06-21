@@ -40,6 +40,11 @@ func _save_memos() -> void:
 	else:
 		push_error("Failed to save memos: " + str(FileAccess.get_open_error()))
 
+func clear_all_memos() -> void:
+	memos.clear()
+	_save_memos()
+	memo_updated.emit()
+
 func add_memo(content: String, deadline: String = "") -> Dictionary:
 	var memo = {
 		"id": str(Time.get_unix_time_from_system()) + "_" + str(randi()),

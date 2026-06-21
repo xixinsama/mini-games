@@ -89,7 +89,7 @@ func _process(delta):
 
 func _input(event):
 	# Track user activity for idle detection
-	if event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
+	if event is InputEventKey or event is InputEventMouseButton:
 		last_activity_time = Time.get_unix_time_from_system()
 		if idle_triggered:
 			idle_triggered = false
@@ -199,8 +199,9 @@ func _on_save_memo_pressed() -> void:
 	var text = memo_text_edit.text.strip_edges()
 	if text.is_empty():
 		return
-	# Simple approach: clear all and re-add as single memo
-	# For multi-memo editing, parse lines starting with "- "
+	# Clear existing memos before re-adding to avoid duplication
+	MemoManager.clear_all_memos()
+	# Parse lines starting with "- "
 	var lines = text.split("\n")
 	for line in lines:
 		var stripped = line.strip_edges()
