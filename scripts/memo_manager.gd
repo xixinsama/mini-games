@@ -85,7 +85,7 @@ func get_expired_reminders() -> Array:
 	for memo in memos:
 		if memo.get("reminded", false):
 			continue
-		if memo.has("deadline") and not memo["deadline"].is_empty():
+		if memo.has("deadline") and memo["deadline"] is String and not memo["deadline"].is_empty():
 			if memo["deadline"] <= now:
 				memo["reminded"] = true
 				_save_memos()

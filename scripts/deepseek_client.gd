@@ -72,7 +72,7 @@ func _load_config() -> void:
 
 func _emit_config_status():
 	var key = config.get("api_key", "")
-	if key.is_empty() or key.begins_with("sk-your-"):
+	if not key is String or key.is_empty() or key.begins_with("sk-your-"):
 		config_loaded.emit(false)
 	else:
 		config_loaded.emit(true)
@@ -120,7 +120,7 @@ func send_system_trigger(trigger_type: String, context: Dictionary = {}) -> void
 		"idle_check":
 			user_prompt = "主人好像离开了一会儿，请关心一下~"
 		"reminder":
-			if context.has("memo"):
+			if context.has("memo") and context["memo"] is Dictionary:
 				user_prompt = "请提醒主人：" + context["memo"].get("content", "")
 		_:
 			user_prompt = ""
@@ -133,7 +133,7 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 		return
 
 	var api_key = _get_api_key()
-	if api_key.is_empty() or api_key.begins_with("sk-your-"):
+	if not api_key is String or api_key.is_empty() or api_key.begins_with("sk-your-"):
 		error_occurred.emit("请先设置 API Key~ 右键菜单 -> 设置")
 		return
 
@@ -158,7 +158,7 @@ func _send_request(trigger_type: String, user_text: String, context: Dictionary)
 	# reasoning_effort + thinking: DeepSeek-specific, skip for OpenAI to avoid API errors
 	if config.get("thinking", false):
 		body["thinking"] = {"type": "enabled"}
-		if config.has("reasoning_effort") and not config["reasoning_effort"].is_empty():
+		if config.has("reasoning_effort") and config["reasoning_effort"] is String and not config["reasoning_effort"].is_empty():
 			body["reasoning_effort"] = config["reasoning_effort"]
 
 	var headers = [

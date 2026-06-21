@@ -11,10 +11,10 @@ config_version=5
 [application]
 
 config/name="全能桌面宠物"
-run/main_scene="uid://bh6tj3etivbmw"
-config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
 config/tags=PackedStringArray("2d", "ai", "demo")
+run/main_scene="uid://bh6tj3etivbmw"
+config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
+config/icon="res://icon.svg"
 
 [autoload]
 

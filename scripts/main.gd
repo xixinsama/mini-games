@@ -264,7 +264,7 @@ func get_random_screen_position() -> Vector2:
 	var window_size = get_window().size
 	var max_x = screen_size.x - window_size.x
 	var max_y = screen_size.y - window_size.y
-	return Vector2(randi_range(0, max_x), randi_range(0, max_y))
+	return Vector2(randi_range(0, max(0, max_x)), randi_range(0, max(0, max_y)))
 
 
 func _on_drag_area_input(_viewport, event, _shape_idx):

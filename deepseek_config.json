@@ -1,7 +1,7 @@
 {
-  "api_key": "sk-your-api-key-here",
+  "api_key": "sk-c9a772daec934984a44bb742ccd18921",
   "model": "deepseek-v4-pro",
   "base_url": "https://api.deepseek.com",
-  "thinking": true,
+  "thinking": false,
   "reasoning_effort": "high"
 }

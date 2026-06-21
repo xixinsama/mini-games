@@ -25,6 +25,7 @@ current_tab = 0
 
 [node name="对话" type="VBoxContainer" parent="TabContainer" unique_id=1431839993]
 layout_mode = 2
+theme_override_constants/separation = 6
 metadata/_tab_index = 0
 
 [node name="QuitButton" type="Button" parent="TabContainer/对话" unique_id=511454910]
@@ -35,13 +36,14 @@ text = "退出
 [node name="ModelLabel" type="Label" parent="TabContainer/对话" unique_id=467744216]
 layout_mode = 2
 text = "模型: deepseek-v4-pro"
+horizontal_alignment = 1
 
-[node name="SettingsButton" type="Button" parent="TabContainer/对话" unique_id=3107729485]
+[node name="SettingsButton" type="Button" parent="TabContainer/对话" unique_id=-1187237811]
 layout_mode = 2
 text = "设置"
 
 [node name="TextEdit" type="TextEdit" parent="TabContainer/对话" unique_id=1830261291]
-custom_minimum_size = Vector2(120, 200)
+custom_minimum_size = Vector2(120, 174)
 layout_mode = 2
 placeholder_text = "在这里写小作文……"
 wrap_mode = 1

@@ -21,6 +21,11 @@ offset_bottom = 164.0
 grow_horizontal = 1
 grow_vertical = 1
 
+[node name="TabContainer" parent="menu" index="0" unique_id=78581391]
+offset_left = -84.0
+offset_right = 85.0
+offset_bottom = 199.0
+
 [connection signal="pressed" from="menu/TabContainer/对话/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="menu/TabContainer/对话/SettingsButton" to="." method="_on_settings_pressed"]
 [connection signal="text_changed" from="menu/TabContainer/对话/TextEdit" to="." method="_on_text_changed"]
