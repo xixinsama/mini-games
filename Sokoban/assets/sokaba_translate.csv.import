@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bypkmfobsuhaj"
+
+[deps]
+
+files=["res://assets/sokaba_translate.en.translation", "res://assets/sokaba_translate.zh.translation"]
+
+source_file="res://assets/sokaba_translate.csv"
+dest_files=["res://assets/sokaba_translate.en.translation", "res://assets/sokaba_translate.zh.translation"]
+
+[params]
+
+compress=true
+delimiter=0
