@@ -1,0 +1,17 @@
+[remap]
+
+importer="vox_object.voxel_destruction"
+type="VoxelResource"
+uid="uid://u0eae1tjlknr"
+path="res://.godot/imported/TallBuilding02.vox-bea67271146f3e6c81eb6aa0e87efed2.tres"
+
+[deps]
+
+source_file="res://assets/vox_building/TallBuilding02.vox"
+dest_files=["res://.godot/imported/TallBuilding02.vox-bea67271146f3e6c81eb6aa0e87efed2.tres"]
+
+[params]
+
+Scale=Vector3(0.1, 0.1, 0.1)
+Chunk_Size=Vector3(16, 16, 16)
+Resource_type=0

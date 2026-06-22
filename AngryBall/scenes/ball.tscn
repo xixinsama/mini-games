@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://4rcuwtyjcvpu"]
+
+[ext_resource type="Script" uid="uid://bao01aqjo5vke" path="res://scripts/ball.gd" id="1_7s4qf"]
+[ext_resource type="Script" uid="uid://b533raywjeqla" path="res://addons/VoxelDestruction/Nodes/voxel_damager.gd" id="2_cxlvu"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cxlvu"]
+bounce = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_n1dj2"]
+radius = 0.15
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1dj2"]
+albedo_color = Color(0, 0.8901961, 0.9098039, 1)
+metallic = 1.0
+roughness = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7s4qf"]
+radius = 0.15
+
+[sub_resource type="Curve" id="Curve_f7cbr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.3034786), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_cxlvu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cxlvu"]
+
+[node name="Ball" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_cxlvu")
+contact_monitor = true
+max_contacts_reported = 2
+script = ExtResource("1_7s4qf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_n1dj2")
+surface_material_override/0 = SubResource("StandardMaterial3D_n1dj2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_7s4qf")
+
+[node name="VoxelDamager" type="Area3D" parent="."]
+unique_name_in_owner = true
+top_level = true
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2_cxlvu")
+base_damage = 240.0
+damage_curve = SubResource("Curve_f7cbr")
+base_power = 2
+power_curve = SubResource("Curve_cxlvu")
+knock_back_debri = true
+metadata/_custom_type_script = "uid://b533raywjeqla"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelDamager"]
+shape = SubResource("BoxShape3D_cxlvu")
+debug_color = Color(0.6117647, 0, 0.043137256, 1)

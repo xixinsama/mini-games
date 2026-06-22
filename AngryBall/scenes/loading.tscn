@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://papgurewgbuo"]
+
+[ext_resource type="Script" uid="uid://dqjqnlddnx7pb" path="res://scripts/loading.gd" id="1_ir5ef"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ir5ef"]
+font_size = 24
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0.24990958, 0.019365404, 2.4065375e-08, 0.19215687)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yc7uc"]
+font_size = 18
+font_color = Color(1, 0.8352941, 1, 1)
+outline_size = 2
+shadow_size = 4
+shadow_color = Color(0, 0.34901962, 0.61960787, 0.49803922)
+shadow_offset = Vector2(2, 2)
+
+[node name="Loading" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir5ef")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StateLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Loading"
+label_settings = SubResource("LabelSettings_ir5ef")
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TipLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Tips"
+label_settings = SubResource("LabelSettings_yc7uc")
+horizontal_alignment = 1

@@ -6,7 +6,7 @@
 * Sokoban(原生窗口游戏-推箱)
 * NaiLoong(C#-Win窗口-桌宠)
 * SlimeWakeUp(解谜)
-* 20s_jam_2025(3D弹球)
+* AngryBall(3D弹球-20s_jam_2025)
 * MonsterSweeper(扫雷-绘画)
 * YCCTO(迷宫)
 * FindGodot(解谜)

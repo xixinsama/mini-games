@@ -1,0 +1,17 @@
+[remap]
+
+importer="vox_object.voxel_destruction"
+type="VoxelResource"
+uid="uid://brqsxtc8geyq7"
+path="res://.godot/imported/SmallBuilding03.vox-b3d633f8b5a98660d5d11e0030ac764a.tres"
+
+[deps]
+
+source_file="res://assets/vox_building/SmallBuilding03.vox"
+dest_files=["res://.godot/imported/SmallBuilding03.vox-b3d633f8b5a98660d5d11e0030ac764a.tres"]
+
+[params]
+
+Scale=Vector3(0.1, 0.1, 0.1)
+Chunk_Size=Vector3(16, 16, 16)
+Resource_type=0

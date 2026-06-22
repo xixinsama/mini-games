@@ -1,0 +1,52 @@
+extends Node
+class_name voxel_server
+## Keeps track of data used in monitors
+
+## Array of [VoxelObject]s
+var voxel_objects: Array
+## Array of [VoxelDamager]s
+var voxel_damagers: Array
+## Amount of intact voxels
+var total_active_voxels: int
+## Ammount of shapes used in [VoxelObject]s
+var shape_count: int
+## 累积被破坏的体素总数
+var total_destroyed_voxels: int = 0
+
+func _ready():
+	Performance.add_custom_monitor("Voxel Destruction/Voxel Objects", get_voxel_object_count)
+	Performance.add_custom_monitor("Voxel Destruction/Active Voxels", get_voxel_count)
+	Performance.add_custom_monitor("Voxel Destruction/Visible Voxels", get_visible_voxel_count)
+	Performance.add_custom_monitor("Voxel Destruction/Shape Count", get_shape_count)
+	#Performance.add_custom_monitor("Voxel Destruction/Destroyed Voxels", get_destroyed_voxel_count)t
+
+## Returns [member voxel_server.voxel_objects] size
+func get_voxel_object_count():
+	return voxel_objects.size()
+
+## Returns [member voxel_server.total_active_voxels]
+func get_voxel_count():
+	return total_active_voxels
+
+## Returns [VoxelObject]s [member MultiMesh.visible_instance_count]
+func get_visible_voxel_count():
+	var visible_voxel_count = 0
+	for object in voxel_objects:
+		visible_voxel_count += object.multimesh.visible_instance_count
+	return visible_voxel_count
+
+## Returns [member voxel_server.shape_count]
+func get_shape_count():
+	return shape_count
+
+## 返回累积被破坏的体素总数
+func get_destroyed_voxel_count():
+	return total_destroyed_voxels
+
+## 增加被破坏体素的计数
+func add_destroyed_voxels(count: int):
+	total_destroyed_voxels += count
+
+## 重置被破坏体素的计数
+func reset_destroyed_count():
+	total_destroyed_voxels = 0
