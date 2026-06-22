@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://6igoi878hpx1"]
+
+[ext_resource type="Script" path="res://script/test.gd" id="1_4151a"]
+[ext_resource type="PackedScene" uid="uid://3r2gmpgp3sam" path="res://scene/enemy.tscn" id="3_fpwfm"]
+[ext_resource type="PackedScene" uid="uid://n51yxye8n0j6" path="res://scene/player.tscn" id="4_kj7pd"]
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="5_kjtrc"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="6_ff4pe"]
+
+[node name="test" type="Node2D"]
+script = ExtResource("1_4151a")
+
+[node name="enemy" parent="." instance=ExtResource("3_fpwfm")]
+position = Vector2(160, 890)
+enemy_health_max = 250
+enemy_health = 250
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("6_ff4pe")
+scene = ExtResource("5_kjtrc")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+one_shot = true
+
+[node name="player" parent="." instance=ExtResource("4_kj7pd")]

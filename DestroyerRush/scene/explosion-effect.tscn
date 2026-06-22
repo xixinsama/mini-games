@@ -1,0 +1,154 @@
+[gd_scene load_steps=22 format=3 uid="uid://81wuve4douh5"]
+
+[ext_resource type="Texture2D" uid="uid://cafe7oti8500i" path="res://asset/SpaceShooterAssetPack_Miscellaneous.png" id="1_kd7h3"]
+[ext_resource type="Script" path="res://compenent/onetime_animated_effect.gd" id="2_ljy2s"]
+[ext_resource type="AudioStream" uid="uid://xwim1sgja4a2" path="res://asset/Sounds/SE/explosion-47821.mp3" id="3_7v3wi"]
+[ext_resource type="AudioStream" uid="uid://sfchcayhtxbx" path="res://asset/Sounds/SE/explosion-80108.mp3" id="4_wpx4e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_luhhd"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(72, 56, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w80i"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(80, 56, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1pvl6"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(88, 56, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxui4"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(96, 56, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpale"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(40, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68eeg"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(48, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnhyt"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(56, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4733t"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(64, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4oi2x"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(72, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oe6gg"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(80, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3y81"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(88, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2x248"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(96, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqnhe"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(40, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ascv4"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(56, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5hkyw"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(72, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjgjy"]
+atlas = ExtResource("1_kd7h3")
+region = Rect2(88, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ksa11"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_luhhd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3w80i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1pvl6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxui4")
+}],
+"loop": false,
+"name": &"explosion_blue",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpale")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68eeg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnhyt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4733t")
+}],
+"loop": false,
+"name": &"explosion_purple",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4oi2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oe6gg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3y81")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2x248")
+}],
+"loop": false,
+"name": &"explosion_red",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqnhe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ascv4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5hkyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjgjy")
+}],
+"loop": false,
+"name": &"explosion_white",
+"speed": 10.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_ksa11")
+animation = &"explosion_blue"
+script = ExtResource("2_ljy2s")
+
+[node name="EnemyAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_7v3wi")
+bus = &"Sound Effects"
+
+[node name="PlayerAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_wpx4e")

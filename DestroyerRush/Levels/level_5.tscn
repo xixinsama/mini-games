@@ -1,0 +1,156 @@
+[gd_scene load_steps=22 format=3 uid="uid://blk7ckguqgq0h"]
+
+[ext_resource type="Script" path="res://script/level_5.gd" id="1_g71bw"]
+[ext_resource type="PackedScene" uid="uid://3r2gmpgp3sam" path="res://scene/enemy.tscn" id="1_ksg77"]
+[ext_resource type="AudioStream" uid="uid://daemgwnsxwyj6" path="res://asset/Sounds/BGM/A Rift In Space.wav" id="2_cdn05"]
+[ext_resource type="Script" path="res://compenent/follow_path_component.gd" id="3_oppx3"]
+[ext_resource type="Curve2D" uid="uid://p12vv0lengj4" path="res://asset/PathSrc/path_infinite.tres" id="4_53vfd"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="4_oxab1"]
+[ext_resource type="FontFile" uid="uid://bla6t7bkr7o7g" path="res://fonts/kenney_mini_square.ttf" id="5_1eiqw"]
+[ext_resource type="PackedScene" uid="uid://n51yxye8n0j6" path="res://scene/player.tscn" id="5_l5wxj"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="8_hhj5u"]
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="9_88o57"]
+[ext_resource type="Script" path="res://script/enemy_copy_for_twoboss.gd" id="10_0x6pw"]
+[ext_resource type="Script" path="res://compenent/move_component.gd" id="11_0ijnr"]
+[ext_resource type="Script" path="res://script/States/state_machine.gd" id="12_iha65"]
+[ext_resource type="Script" path="res://script/States/EnemyIdle.gd" id="13_5xs3x"]
+[ext_resource type="Script" path="res://script/States/Attack0.gd" id="14_n6i87"]
+[ext_resource type="Script" path="res://script/States/Attack1.gd" id="15_31g8e"]
+[ext_resource type="Script" path="res://script/States/Attack2.gd" id="16_ceeot"]
+[ext_resource type="Script" path="res://script/States/Attack3.gd" id="17_mcgmy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fq8gq"]
+size = Vector2(2079.88, 93)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lhq3o"]
+radius = 69.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_tvuja"]
+font = ExtResource("5_1eiqw")
+font_size = 32
+font_color = Color(1, 1, 0.796078, 1)
+outline_size = 4
+outline_color = Color(0.267417, 0.107386, 0, 0.996078)
+
+[node name="Level5" type="Node2D"]
+script = ExtResource("1_g71bw")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_cdn05")
+autoplay = true
+bus = &"BGM"
+
+[node name="killzone" type="Area2D" parent="."]
+collision_layer = 5
+collision_mask = 48
+script = ExtResource("4_oxab1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+position = Vector2(428, -168)
+shape = SubResource("RectangleShape2D_fq8gq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="killzone"]
+position = Vector2(-572, 420)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_fq8gq")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="killzone"]
+position = Vector2(1424, 460)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_fq8gq")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="killzone"]
+position = Vector2(418, 1483)
+shape = SubResource("RectangleShape2D_fq8gq")
+
+[node name="enemy" parent="." instance=ExtResource("1_ksg77")]
+enemy_looklike = 23
+enemy_destroy_effect = 1
+enemy_health_max = 1800
+enemy_health = 1800
+enemy_speed = 300
+energy_point = 10
+
+[node name="invincible" type="Area2D" parent="enemy"]
+collision_layer = 4
+collision_mask = 16
+script = ExtResource("4_oxab1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy/invincible"]
+shape = SubResource("CircleShape2D_lhq3o")
+disabled = true
+
+[node name="Label" type="Label" parent="enemy"]
+custom_minimum_size = Vector2(500, 40)
+offset_left = -161.0
+offset_top = 79.0
+offset_right = 339.0
+offset_bottom = 119.0
+label_settings = SubResource("LabelSettings_tvuja")
+
+[node name="FollowPathComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_oppx3")
+actor = NodePath("../enemy")
+path_points = ExtResource("4_53vfd")
+auto_start = true
+speed = 300
+
+[node name="player" parent="." instance=ExtResource("5_l5wxj")]
+position = Vector2(359, 1133)
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("8_hhj5u")
+scene = ExtResource("9_88o57")
+
+[node name="SubEnemy1" parent="." instance=ExtResource("1_ksg77")]
+position = Vector2(160, -300)
+script = ExtResource("10_0x6pw")
+enemy_destroy_effect = 1
+enemy_health_max = 600
+enemy_health = 600
+
+[node name="SubEnemy2" parent="." instance=ExtResource("1_ksg77")]
+position = Vector2(320, -300)
+script = ExtResource("10_0x6pw")
+enemy_looklike = 22
+enemy_destroy_effect = 3
+enemy_health_max = 400
+enemy_health = 400
+
+[node name="SubEnemy3" parent="." instance=ExtResource("1_ksg77")]
+position = Vector2(480, -300)
+script = ExtResource("10_0x6pw")
+enemy_looklike = 14
+enemy_destroy_effect = 2
+enemy_health_max = 500
+enemy_health = 500
+
+[node name="MoveComponent" type="Node" parent="."]
+script = ExtResource("11_0ijnr")
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("12_iha65")
+initial_state = NodePath("EnemyIdle")
+
+[node name="EnemyIdle" type="Node2D" parent="State Machine" node_paths=PackedStringArray("actor")]
+script = ExtResource("13_5xs3x")
+actor = NodePath("../..")
+
+[node name="Attack0" type="Node2D" parent="State Machine" node_paths=PackedStringArray("enemy", "spawner_component")]
+script = ExtResource("14_n6i87")
+enemy = NodePath("../../enemy")
+spawner_component = NodePath("../../SpawnerComponent")
+
+[node name="Attack1" type="Node2D" parent="State Machine" node_paths=PackedStringArray("enemy", "spawner_component")]
+script = ExtResource("15_31g8e")
+enemy = NodePath("../../enemy")
+spawner_component = NodePath("../../SpawnerComponent")
+
+[node name="Attack2" type="Node2D" parent="State Machine" node_paths=PackedStringArray("enemy", "spawner_component")]
+script = ExtResource("16_ceeot")
+enemy = NodePath("../../enemy")
+spawner_component = NodePath("../../SpawnerComponent")
+
+[node name="Attack3" type="Node2D" parent="State Machine" node_paths=PackedStringArray("dia")]
+script = ExtResource("17_mcgmy")
+dia = NodePath("../../enemy/Label")

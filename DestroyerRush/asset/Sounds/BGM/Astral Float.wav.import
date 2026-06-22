@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bv30nam14j2bb"
+path="res://.godot/imported/Astral Float.wav-4ba594b68c7356d1b5991efd7d229561.sample"
+
+[deps]
+
+source_file="res://asset/Sounds/BGM/Astral Float.wav"
+dest_files=["res://.godot/imported/Astral Float.wav-4ba594b68c7356d1b5991efd7d229561.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

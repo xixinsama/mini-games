@@ -1,0 +1,92 @@
+[gd_scene load_steps=15 format=3 uid="uid://c4fvwhulmiwl3"]
+
+[ext_resource type="PackedScene" uid="uid://n51yxye8n0j6" path="res://scene/player.tscn" id="1_d8d06"]
+[ext_resource type="Script" path="res://script/level_1.gd" id="1_hu5ii"]
+[ext_resource type="PackedScene" uid="uid://3r2gmpgp3sam" path="res://scene/enemy.tscn" id="2_bdh7i"]
+[ext_resource type="Script" path="res://script/enemy_copy_for_twoboss.gd" id="3_pggb1"]
+[ext_resource type="Script" path="res://script/States/state_machine.gd" id="7_457st"]
+[ext_resource type="Texture2D" uid="uid://csrtfxksqtrqg" path="res://asset/heart.png" id="7_dv3we"]
+[ext_resource type="Script" path="res://compenent/follow_path_component.gd" id="7_r5vrb"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="7_uxsrq"]
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="8_7l8lf"]
+[ext_resource type="Material" uid="uid://dcv3oi2nv6eq" path="res://shader/bullet_boom.tres" id="8_ckf85"]
+[ext_resource type="Curve2D" uid="uid://dl4ls6uwej76y" path="res://asset/PathSrc/path_heart.tres" id="9_op08b"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="10_qmnwl"]
+[ext_resource type="AudioStream" uid="uid://dwofgto14k0vt" path="res://asset/Sounds/BGM/Exploding Sun.mp3" id="13_bp5my"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5e2qq"]
+size = Vector2(2079.88, 93)
+
+[node name="Level1" type="Node2D"]
+script = ExtResource("1_hu5ii")
+
+[node name="enemy1" parent="." instance=ExtResource("2_bdh7i")]
+script = ExtResource("3_pggb1")
+enemy_looklike = 22
+enemy_health_max = 800
+enemy_health = 800
+
+[node name="enemy2" parent="." instance=ExtResource("2_bdh7i")]
+position = Vector2(720, 0)
+script = ExtResource("3_pggb1")
+enemy_looklike = 19
+enemy_health_max = 800
+enemy_health = 800
+
+[node name="player" parent="." instance=ExtResource("1_d8d06")]
+position = Vector2(340, 1092)
+
+[node name="FollowPathComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("7_r5vrb")
+actor = NodePath("../enemy1")
+path_points = ExtResource("9_op08b")
+speed = 200
+
+[node name="FollowPathComponent2" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("7_r5vrb")
+actor = NodePath("../enemy2")
+path_points = ExtResource("9_op08b")
+speed = -200
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("7_uxsrq")
+scene = ExtResource("8_7l8lf")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+amount = 100
+process_material = ExtResource("8_ckf85")
+texture = ExtResource("7_dv3we")
+explosiveness = 1.0
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("7_457st")
+
+[node name="killzone" type="Area2D" parent="."]
+collision_layer = 5
+collision_mask = 48
+script = ExtResource("10_qmnwl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+position = Vector2(424, -552)
+shape = SubResource("RectangleShape2D_5e2qq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="killzone"]
+position = Vector2(-572, 420)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_5e2qq")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="killzone"]
+position = Vector2(1424, 460)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_5e2qq")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="killzone"]
+position = Vector2(418, 1483)
+shape = SubResource("RectangleShape2D_5e2qq")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_bp5my")
+autoplay = true
+bus = &"BGM"
+parameters/looping = true

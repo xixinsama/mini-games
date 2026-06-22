@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://bxh4vpfjfw480"]
+
+[ext_resource type="Script" path="res://script/menu.gd" id="1_r74nm"]
+[ext_resource type="LabelSettings" uid="uid://c8l4vo3gn7yl7" path="res://fonts/jump_label.tres" id="2_eq4nl"]
+[ext_resource type="LabelSettings" uid="uid://lyux8pgux32t" path="res://fonts/title_label_settings.tres" id="2_l1rnf"]
+[ext_resource type="LabelSettings" uid="uid://b4kbn4k1bdngv" path="res://fonts/default_label_settings.tres" id="3_mhf0v"]
+[ext_resource type="FontFile" uid="uid://bla6t7bkr7o7g" path="res://fonts/kenney_mini_square.ttf" id="4_eb6t7"]
+[ext_resource type="AudioStream" uid="uid://du7bpn0xlaif3" path="res://asset/Sounds/SE/game-start-6104.mp3" id="4_g5hid"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2gk8g"]
+font = ExtResource("4_eb6t7")
+font_size = 36
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r74nm")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 51.0
+offset_top = 214.0
+offset_right = 343.0
+offset_bottom = 237.0
+text = "as  sdas das daw daw daw dawd awd"
+label_settings = ExtResource("2_eq4nl")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="titkelabe" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "destroyer rush"
+label_settings = ExtResource("2_l1rnf")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "press 'space' to begin"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "If you are using an Xbox controller
+press A"
+label_settings = SubResource("LabelSettings_2gk8g")
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_g5hid")
+bus = &"BGM"

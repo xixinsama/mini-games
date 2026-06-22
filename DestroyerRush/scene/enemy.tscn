@@ -1,0 +1,103 @@
+[gd_scene load_steps=17 format=3 uid="uid://3r2gmpgp3sam"]
+
+[ext_resource type="Script" path="res://script/enemy.gd" id="1_hsyke"]
+[ext_resource type="Texture2D" uid="uid://btwx8y4nkejef" path="res://asset/SpaceShooterAssetPack_Ships.png" id="1_lrh0m"]
+[ext_resource type="Script" path="res://compenent/hitbox_component.gd" id="2_8reyk"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="3_qp8lr"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="4_okoq8"]
+[ext_resource type="Script" path="res://compenent/stats_component.gd" id="7_ofyng"]
+[ext_resource type="Script" path="res://compenent/player_manage_component.gd" id="8_7dihk"]
+[ext_resource type="PackedScene" uid="uid://81wuve4douh5" path="res://scene/explosion-effect.tscn" id="9_nh6lm"]
+[ext_resource type="PackedScene" uid="uid://7xpxleg3bbeu" path="res://UI/enemy_health_bar.tscn" id="9_qstbb"]
+[ext_resource type="FontFile" uid="uid://bla6t7bkr7o7g" path="res://fonts/kenney_mini_square.ttf" id="10_gr5jn"]
+[ext_resource type="Script" path="res://compenent/shake_component.gd" id="11_5n1md"]
+[ext_resource type="Script" path="res://script/health_label.gd" id="11_ntn42"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mpt6"]
+atlas = ExtResource("1_lrh0m")
+region = Rect2(32, 16, 48, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_17ody"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b05b5"]
+radius = 56.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_3a6as"]
+font = ExtResource("10_gr5jn")
+font_size = 32
+font_color = Color(1, 0.823529, 1, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(1, 0.635294, 1, 1)
+shadow_offset = Vector2(2, 2)
+
+[node name="enemy" type="Node2D"]
+script = ExtResource("1_hsyke")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(12, 12)
+texture = SubResource("AtlasTexture_1mpt6")
+hframes = 6
+vframes = 4
+frame = 2
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("7_ofyng")
+
+[node name="EnemyManageComponent" type="Node" parent="." node_paths=PackedStringArray("actor", "statscomponent", "hurtboxcomponent", "shake_component", "destroy_effect_spawner_component")]
+script = ExtResource("8_7dihk")
+actor = NodePath("..")
+statscomponent = NodePath("../StatsComponent")
+hurtboxcomponent = NodePath("../HurtboxComponent")
+shake_component = NodePath("../ShakeComponent")
+destroy_effect_spawner_component = NodePath("../DestroyEffectSpawnerComponent")
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 0
+script = ExtResource("2_8reyk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("RectangleShape2D_17ody")
+debug_color = Color(0, 0.649944, 0.120462, 0.42)
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 18
+script = ExtResource("3_qp8lr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_b05b5")
+debug_color = Color(1, 0.292254, 0.223169, 0.42)
+
+[node name="DestroyEffectSpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("4_okoq8")
+scene = ExtResource("9_nh6lm")
+
+[node name="EnemyHealthBar" parent="." node_paths=PackedStringArray("enemy_stats") instance=ExtResource("9_qstbb")]
+offset_left = -96.0
+offset_top = -80.0
+offset_right = -84.0
+offset_bottom = -79.0
+scale = Vector2(16, 16)
+enemy_stats = NodePath("../StatsComponent")
+
+[node name="HealthLabel" type="Label" parent="." node_paths=PackedStringArray("stats_component")]
+offset_left = -80.0
+offset_top = -104.0
+offset_right = -4.0
+offset_bottom = -21.0
+text = "100%
+
+"
+label_settings = SubResource("LabelSettings_3a6as")
+script = ExtResource("11_ntn42")
+stats_component = NodePath("../StatsComponent")
+
+[node name="ShakeComponent" type="Node" parent="." node_paths=PackedStringArray("node")]
+script = ExtResource("11_5n1md")
+node = NodePath("../Sprite2D")
+shake_amount = 3.0
+shake_duration = 0.1
+
+[connection signal="health_changed" from="StatsComponent" to="HealthLabel" method="_on_stats_component_health_changed"]

@@ -1,0 +1,144 @@
+[gd_scene load_steps=19 format=3 uid="uid://n51yxye8n0j6"]
+
+[ext_resource type="Script" path="res://compenent/stats_component.gd" id="1_c2tg5"]
+[ext_resource type="Script" path="res://script/player.gd" id="1_kcnqc"]
+[ext_resource type="Texture2D" uid="uid://btwx8y4nkejef" path="res://asset/SpaceShooterAssetPack_Ships.png" id="2_vs1xv"]
+[ext_resource type="Script" path="res://compenent/move_component.gd" id="3_mc8tl"]
+[ext_resource type="Script" path="res://compenent/move_input_component.gd" id="4_jaqh3"]
+[ext_resource type="Script" path="res://compenent/position_clamp_component.gd" id="5_ui70m"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="7_ok7w2"]
+[ext_resource type="Script" path="res://compenent/edge_ball.gd" id="8_af7rk"]
+[ext_resource type="Script" path="res://compenent/player_manage_component.gd" id="8_rsuy1"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="10_5y2br"]
+[ext_resource type="PackedScene" uid="uid://dsjs323qc63ng" path="res://scene/player_bullet.tscn" id="11_jj21o"]
+[ext_resource type="PackedScene" uid="uid://b821dikdcn1ee" path="res://UI/player_energy_panel.tscn" id="12_vsasp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nn05j"]
+atlas = ExtResource("2_vs1xv")
+region = Rect2(8, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8rmf"]
+atlas = ExtResource("2_vs1xv")
+region = Rect2(0, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ay52o"]
+atlas = ExtResource("2_vs1xv")
+region = Rect2(16, 32, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fdvs8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nn05j")
+}],
+"loop": true,
+"name": &"center",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8rmf")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ay52o")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uqhv3"]
+radius = 2.63688
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8yr2a"]
+radius = 4.29571
+
+[node name="player" type="Node2D"]
+scale = Vector2(8, 8)
+script = ExtResource("1_kcnqc")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("1_c2tg5")
+roll_speed = 6
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fdvs8")
+animation = &"center"
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_mc8tl")
+actor = NodePath("..")
+
+[node name="MoveInputComponent" type="Node" parent="." node_paths=PackedStringArray("stats_component", "move_component")]
+script = ExtResource("4_jaqh3")
+stats_component = NodePath("../StatsComponent")
+move_component = NodePath("../MoveComponent")
+
+[node name="PositionClampComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("5_ui70m")
+actor = NodePath("..")
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_mask = 40
+script = ExtResource("7_ok7w2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_uqhv3")
+debug_color = Color(0.932935, 0.25933, 0, 0.42)
+
+[node name="GrazeArea" type="Area2D" parent="."]
+collision_mask = 32
+
+[node name="Outer" type="CollisionShape2D" parent="GrazeArea"]
+shape = SubResource("CircleShape2D_8yr2a")
+
+[node name="EdgeBall" type="Node2D" parent="." node_paths=PackedStringArray("outer", "inner")]
+script = ExtResource("8_af7rk")
+outer = NodePath("../GrazeArea")
+inner = NodePath("../HurtboxComponent")
+
+[node name="PlayerManageComponent" type="Node" parent="." node_paths=PackedStringArray("hurtboxcomponent", "statscomponent")]
+script = ExtResource("8_rsuy1")
+hurtboxcomponent = NodePath("../HurtboxComponent")
+statscomponent = NodePath("../StatsComponent")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="left_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-1.5, -3.125)
+
+[node name="right_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1.5, -3.125)
+
+[node name="center" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, -4)
+
+[node name="letf_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-2.5, -2)
+
+[node name="right_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(2.5, -2)
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("10_5y2br")
+scene = ExtResource("11_jj21o")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlayerEnergyPanel" parent="CanvasLayer" node_paths=PackedStringArray("player_stats") instance=ExtResource("12_vsasp")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -72.0
+offset_right = 204.0
+offset_bottom = -8.0
+grow_vertical = 0
+player_stats = NodePath("../../StatsComponent")
+
+[connection signal="energy_up" from="EdgeBall" to="PlayerManageComponent" method="_on_edge_ball_energy_up"]

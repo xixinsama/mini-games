@@ -1,0 +1,333 @@
+[gd_scene load_steps=26 format=3 uid="uid://bxh4vpfjfw480"]
+
+[ext_resource type="Script" path="res://script/menu.gd" id="1_r74nm"]
+[ext_resource type="LabelSettings" uid="uid://c8l4vo3gn7yl7" path="res://fonts/jump_label.tres" id="2_eq4nl"]
+[ext_resource type="LabelSettings" uid="uid://lyux8pgux32t" path="res://fonts/title_label_settings.tres" id="2_l1rnf"]
+[ext_resource type="LabelSettings" uid="uid://b4kbn4k1bdngv" path="res://fonts/default_label_settings.tres" id="3_mhf0v"]
+[ext_resource type="FontFile" uid="uid://bla6t7bkr7o7g" path="res://fonts/kenney_mini_square.ttf" id="4_eb6t7"]
+[ext_resource type="AudioStream" uid="uid://du7bpn0xlaif3" path="res://asset/Sounds/SE/game-start-6104.mp3" id="4_g5hid"]
+[ext_resource type="Texture2D" uid="uid://c515kjqbuppnw" path="res://asset/gdb-keyboard-2.png" id="7_1vxwr"]
+[ext_resource type="Texture2D" uid="uid://dbuneftjxdpw2" path="res://asset/gdb-xbox-2.png" id="7_5lwhn"]
+[ext_resource type="Texture2D" uid="uid://d4coqdgmu2u17" path="res://asset/SpaceShooterAssetPack_IU.png" id="9_7s25k"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2gk8g"]
+font = ExtResource("4_eb6t7")
+font_size = 36
+
+[sub_resource type="LabelSettings" id="LabelSettings_lcmjd"]
+font = ExtResource("4_eb6t7")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvcc0"]
+atlas = ExtResource("7_1vxwr")
+region = Rect2(96, 432, 112, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hb6sm"]
+atlas = ExtResource("7_1vxwr")
+region = Rect2(32, 608, 112, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swnnh"]
+atlas = ExtResource("7_1vxwr")
+region = Rect2(144, 608, 112, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2y0ct"]
+atlas = ExtResource("7_1vxwr")
+region = Rect2(256, 608, 112, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4x32"]
+atlas = ExtResource("7_1vxwr")
+region = Rect2(368, 608, 112, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m85g6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvcc0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hb6sm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swnnh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2y0ct")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4x32")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_no76n"]
+atlas = ExtResource("7_5lwhn")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqpt5"]
+atlas = ExtResource("7_5lwhn")
+region = Rect2(64, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xytx7"]
+atlas = ExtResource("7_5lwhn")
+region = Rect2(80, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yipnv"]
+atlas = ExtResource("7_5lwhn")
+region = Rect2(96, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8ix0x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_no76n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqpt5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xytx7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yipnv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bvio"]
+atlas = ExtResource("9_7s25k")
+region = Rect2(72, 40, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d403f"]
+atlas = ExtResource("9_7s25k")
+region = Rect2(64, 40, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hvukv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bvio")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d403f")
+}],
+"loop": true,
+"name": &"on_box",
+"speed": 2.0
+}]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r74nm")
+
+[node name="FEATURES" type="VSplitContainer" parent="."]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 1073.0
+offset_right = 651.0
+offset_bottom = 1185.0
+
+[node name="Label" type="Label" parent="FEATURES"]
+layout_mode = 2
+text = "Game features:
+1.    Press the spacebar or A to roll, and you can roll once every two seconds
+2.    Invincible while rolling
+3.    When a bullet passes by you without causing any damage, you gain energy
+4.    After accumulating a certain amount of energy, restore health"
+label_settings = ExtResource("2_eq4nl")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(720, 1280)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VSplitContainer" type="VSplitContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(0, 820)
+layout_mode = 2
+split_offset = 620
+
+[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="titkelabe" type="Label" parent="CenterContainer/VSplitContainer/TitleContainer"]
+layout_mode = 2
+text = "destroyer rush"
+label_settings = ExtResource("2_l1rnf")
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/TitleContainer"]
+layout_mode = 2
+text = "press 'space' to begin"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CenterContainer/VSplitContainer/TitleContainer"]
+layout_mode = 2
+text = "If you are using an Xbox controller
+press "
+label_settings = SubResource("LabelSettings_2gk8g")
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="SettingContainer" type="VBoxContainer" parent="CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="ALL" type="HBoxContainer" parent="CenterContainer/VSplitContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/SettingContainer/ALL"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "ALL"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="CenterContainer/VSplitContainer/SettingContainer/ALL"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = -80.0
+max_value = 6.0
+step = 0.01
+
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/VSplitContainer/SettingContainer/ALL"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+
+[node name="BGM" type="HBoxContainer" parent="CenterContainer/VSplitContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/SettingContainer/BGM"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "BGM"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="CenterContainer/VSplitContainer/SettingContainer/BGM"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = -80.0
+max_value = 6.0
+step = 0.01
+value = -6.0
+
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/VSplitContainer/SettingContainer/BGM"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+
+[node name="SFX" type="HBoxContainer" parent="CenterContainer/VSplitContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/SettingContainer/SFX"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "SFX"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="CenterContainer/VSplitContainer/SettingContainer/SFX"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = -80.0
+max_value = 6.0
+step = 0.01
+value = -18.2
+
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/VSplitContainer/SettingContainer/SFX"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+
+[node name="Background" type="HSplitContainer" parent="CenterContainer/VSplitContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/SettingContainer/Background"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+text = "Background"
+label_settings = ExtResource("3_mhf0v")
+horizontal_alignment = 2
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/VSplitContainer/SettingContainer/Background"]
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VSplitContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VSplitContainer/SettingContainer/HBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+text = "BACKGROUND COLOR
+               Takes effect when the previous option is off"
+label_settings = SubResource("LabelSettings_lcmjd")
+horizontal_alignment = 1
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CenterContainer/VSplitContainer/SettingContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_g5hid")
+bus = &"BGM"
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D"]
+z_index = -100
+position = Vector2(333, 372)
+scale = Vector2(1.8125, 3)
+sprite_frames = SubResource("SpriteFrames_m85g6")
+autoplay = "default"
+frame_progress = 0.930573
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D"]
+z_index = -100
+position = Vector2(442, 469)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_8ix0x")
+autoplay = "default"
+frame_progress = 0.764277
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="Node2D"]
+position = Vector2(597, 777)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_hvukv")
+animation = &"on_box"
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="Node2D"]
+position = Vector2(597, 846)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_hvukv")
+animation = &"on_box"
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="Node2D"]
+position = Vector2(597, 908)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_hvukv")
+animation = &"on_box"
+
+[connection signal="toggled" from="CenterContainer/VSplitContainer/SettingContainer/ALL/CheckBox" to="." method="_on_ALL_check_box_toggled"]
+[connection signal="toggled" from="CenterContainer/VSplitContainer/SettingContainer/BGM/CheckBox" to="." method="_on_BGM_check_box_toggled"]
+[connection signal="toggled" from="CenterContainer/VSplitContainer/SettingContainer/SFX/CheckBox" to="." method="_on_SFX_check_box_toggled"]
+[connection signal="toggled" from="CenterContainer/VSplitContainer/SettingContainer/Background/CheckButton" to="." method="_on_Background_check_button_toggled"]
+[connection signal="color_changed" from="CenterContainer/VSplitContainer/SettingContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]

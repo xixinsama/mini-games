@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://clkveb75o3vbl"]
+
+[ext_resource type="Shader" path="res://shader/change_color.gdshader" id="1_35d54"]
+
+[resource]
+shader = ExtResource("1_35d54")
+shader_parameter/tint_color = Color(0.309362, 0.623873, 0.506779, 1)

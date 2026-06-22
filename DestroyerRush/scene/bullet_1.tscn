@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=3 uid="uid://6ciocx7syw28"]
+
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="1_o6nhv"]
+[ext_resource type="Material" uid="uid://c1jxovuqyakmr" path="res://shader/outline_shader_material.tres" id="2_yyclp"]
+[ext_resource type="Script" path="res://compenent/move_component.gd" id="4_mj4r7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tmtq6"]
+size = Vector2(6, 6)
+
+[sub_resource type="Animation" id="Animation_86tys"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_agxis"]
+resource_name = "flash"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pal8e"]
+_data = {
+"RESET": SubResource("Animation_86tys"),
+"flash": SubResource("Animation_agxis")
+}
+
+[node name="bullet_1" instance=ExtResource("1_o6nhv")]
+
+[node name="Sprite2D" parent="." index="0"]
+material = ExtResource("2_yyclp")
+frame = 27
+
+[node name="HitboxComponent" parent="." index="1"]
+position = Vector2(-0.625, -0.125)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HitboxComponent" index="0"]
+position = Vector2(0.625, 0.125)
+shape = SubResource("RectangleShape2D_tmtq6")
+
+[node name="MoveComponent2" type="Node" parent="." index="2" node_paths=PackedStringArray("actor")]
+script = ExtResource("4_mj4r7")
+actor = NodePath("..")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." index="3"]
+libraries = {
+"": SubResource("AnimationLibrary_pal8e")
+}
+autoplay = "flash"
+
+[node name="MoveComponent" parent="." index="5"]
+roll_vec_rad_2 = -3.142
+roll_r_1 = 100.0
+speed_trail_1 = 150.0

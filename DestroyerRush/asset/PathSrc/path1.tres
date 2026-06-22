@@ -1,0 +1,7 @@
+[gd_resource type="Curve2D" format=3 uid="uid://ws7rshfo0lyt"]
+
+[resource]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 312, 320, 0, 0, 0, 0, 384, 320, 0, 0, 0, 0, 384, 384, 0, 0, 0, 0, 312, 384, 0, 0, 0, 0, 312, 320)
+}
+point_count = 5

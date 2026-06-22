@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=3 uid="uid://comi4hgpyqnc8"]
+
+[ext_resource type="Script" path="res://script/level_3.gd" id="1_tbd25"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="2_kgh36"]
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="3_kuupd"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="4_6f011"]
+[ext_resource type="AudioStream" uid="uid://bv30nam14j2bb" path="res://asset/Sounds/BGM/Astral Float.wav" id="5_pl03n"]
+[ext_resource type="FontFile" uid="uid://bla6t7bkr7o7g" path="res://fonts/kenney_mini_square.ttf" id="6_he6gr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3iy8d"]
+size = Vector2(1280, 20)
+
+[sub_resource type="LabelSettings" id="LabelSettings_d5ub5"]
+font = ExtResource("6_he6gr")
+font_size = 40
+
+[node name="Level3" type="Node2D"]
+script = ExtResource("1_tbd25")
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("2_kgh36")
+scene = ExtResource("3_kuupd")
+
+[node name="killzone" type="Area2D" parent="."]
+collision_layer = 5
+collision_mask = 48
+script = ExtResource("4_6f011")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+position = Vector2(360, 1290)
+shape = SubResource("RectangleShape2D_3iy8d")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="killzone"]
+position = Vector2(-10, 640)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_3iy8d")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="killzone"]
+position = Vector2(730, 640)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_3iy8d")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="killzone"]
+position = Vector2(360, -10)
+shape = SubResource("RectangleShape2D_3iy8d")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_pl03n")
+autoplay = true
+bus = &"BGM"
+
+[node name="Label" type="Label" parent="."]
+offset_top = 492.0
+offset_right = 720.0
+offset_bottom = 860.0
+text = "You won!!!
+you are simply a master at this kind of game!
+WE suggest you try playing the Touhou Project series of games.
+Thank you for playing!
+
+"
+label_settings = SubResource("LabelSettings_d5ub5")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
+offset_right = 720.0
+offset_bottom = 27.0

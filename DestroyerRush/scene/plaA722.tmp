@@ -1,0 +1,220 @@
+[gd_scene load_steps=28 format=3 uid="uid://n51yxye8n0j6"]
+
+[ext_resource type="Script" path="res://compenent/stats_component.gd" id="1_c2tg5"]
+[ext_resource type="Script" path="res://script/player.gd" id="1_kcnqc"]
+[ext_resource type="Texture2D" uid="uid://btwx8y4nkejef" path="res://asset/SpaceShooterAssetPack_Ships.png" id="2_vs1xv"]
+[ext_resource type="Script" path="res://compenent/move_component.gd" id="3_mc8tl"]
+[ext_resource type="Script" path="res://compenent/move_input_component.gd" id="4_jaqh3"]
+[ext_resource type="Script" path="res://compenent/position_clamp_component.gd" id="5_ui70m"]
+[ext_resource type="Script" path="res://compenent/hurtbox_component.gd" id="7_ok7w2"]
+[ext_resource type="Script" path="res://compenent/edge_ball.gd" id="8_af7rk"]
+[ext_resource type="Script" path="res://compenent/player_manage_component.gd" id="8_rsuy1"]
+[ext_resource type="Script" path="res://compenent/spawner_component.gd" id="10_5y2br"]
+[ext_resource type="PackedScene" uid="uid://dsjs323qc63ng" path="res://scene/player_bullet.tscn" id="11_jj21o"]
+[ext_resource type="PackedScene" uid="uid://81wuve4douh5" path="res://scene/explosion-effect.tscn" id="12_a0kcg"]
+[ext_resource type="PackedScene" uid="uid://b821dikdcn1ee" path="res://UI/player_energy_panel.tscn" id="12_vsasp"]
+[ext_resource type="Texture2D" uid="uid://cafe7oti8500i" path="res://asset/SpaceShooterAssetPack_Miscellaneous.png" id="13_6to12"]
+[ext_resource type="PackedScene" uid="uid://c88ksi4miyfvg" path="res://UI/player_health.tscn" id="14_vmki5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4fqk"]
+atlas = ExtResource("2_vs1xv")
+region = Rect2(0, 0, 24, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y50sh"]
+atlas = ExtResource("13_6to12")
+region = Rect2(40, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1usll"]
+atlas = ExtResource("13_6to12")
+region = Rect2(48, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ui8jt"]
+atlas = ExtResource("13_6to12")
+region = Rect2(56, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cvky"]
+atlas = ExtResource("13_6to12")
+region = Rect2(64, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkseq"]
+atlas = ExtResource("13_6to12")
+region = Rect2(64, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kiu32"]
+atlas = ExtResource("13_6to12")
+region = Rect2(40, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0qgy"]
+atlas = ExtResource("13_6to12")
+region = Rect2(56, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txocn"]
+atlas = ExtResource("13_6to12")
+region = Rect2(48, 24, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wmbf0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y50sh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1usll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ui8jt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5cvky")
+}],
+"loop": true,
+"name": &"centre",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkseq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kiu32")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0qgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txocn")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uqhv3"]
+radius = 2.63688
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8yr2a"]
+radius = 4.29571
+
+[node name="player" type="Node2D"]
+z_index = 100
+scale = Vector2(8, 8)
+script = ExtResource("1_kcnqc")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("1_c2tg5")
+health_max = 6
+health = 6
+roll_speed = 8
+
+[node name="PlayerManageComponent" type="Node" parent="." node_paths=PackedStringArray("actor", "statscomponent", "hurtboxcomponent", "destroy_effect_spawner_component")]
+script = ExtResource("8_rsuy1")
+actor = NodePath("..")
+statscomponent = NodePath("../StatsComponent")
+hurtboxcomponent = NodePath("../HurtboxComponent")
+destroy_effect_spawner_component = NodePath("../DestroyEffectSpawnerComponent2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_a4fqk")
+hframes = 3
+vframes = 5
+frame = 13
+
+[node name="FrameAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 8.25)
+sprite_frames = SubResource("SpriteFrames_wmbf0")
+animation = &"centre"
+autoplay = "centre"
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_mc8tl")
+is_following = null
+is_loop = null
+speed = null
+actor = NodePath("..")
+velocity = null
+roll_velocity = null
+roll_origin_rad_1 = null
+roll_vec_rad_1 = null
+roll_vec_rad_2 = null
+roll_r_1 = null
+speed_trail_1 = null
+speed_trail_2 = null
+trail_who = null
+
+[node name="MoveInputComponent" type="Node" parent="." node_paths=PackedStringArray("stats_component", "move_component")]
+script = ExtResource("4_jaqh3")
+stats_component = NodePath("../StatsComponent")
+move_component = NodePath("../MoveComponent")
+
+[node name="PositionClampComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("5_ui70m")
+actor = NodePath("..")
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_mask = 40
+script = ExtResource("7_ok7w2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_uqhv3")
+debug_color = Color(0.932935, 0.25933, 0, 0.42)
+
+[node name="GrazeArea" type="Area2D" parent="."]
+collision_mask = 32
+
+[node name="Outer" type="CollisionShape2D" parent="GrazeArea"]
+shape = SubResource("CircleShape2D_8yr2a")
+
+[node name="EdgeBall" type="Node2D" parent="." node_paths=PackedStringArray("outer", "inner")]
+script = ExtResource("8_af7rk")
+outer = NodePath("../GrazeArea")
+inner = NodePath("../HurtboxComponent")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="left_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-1.5, -3.125)
+
+[node name="right_1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1.5, -3.125)
+
+[node name="center" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, -4)
+
+[node name="letf_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-2.5, -2)
+
+[node name="right_2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(2.5, -2)
+
+[node name="DestroyEffectSpawnerComponent2" type="Node2D" parent="."]
+script = ExtResource("10_5y2br")
+scene = ExtResource("12_a0kcg")
+
+[node name="BulletSpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("10_5y2br")
+scene = ExtResource("11_jj21o")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlayerHealth" parent="CanvasLayer" node_paths=PackedStringArray("player_stats") instance=ExtResource("14_vmki5")]
+player_stats = NodePath("../../StatsComponent")
+
+[node name="PlayerEnergyPanel" parent="CanvasLayer" node_paths=PackedStringArray("player_stats") instance=ExtResource("12_vsasp")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -72.0
+offset_right = 204.0
+offset_bottom = -8.0
+grow_vertical = 0
+player_stats = NodePath("../../StatsComponent")
+
+[connection signal="roll_finish" from="MoveInputComponent" to="." method="_on_move_input_component_roll_finish"]
+[connection signal="roll_start" from="MoveInputComponent" to="." method="_on_move_input_component_roll_start"]
+[connection signal="energy_up" from="EdgeBall" to="PlayerManageComponent" method="_on_edge_ball_energy_up"]

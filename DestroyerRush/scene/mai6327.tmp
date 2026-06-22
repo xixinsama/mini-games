@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://dcgj6joi43i08"]
+
+[ext_resource type="PackedScene" uid="uid://n51yxye8n0j6" path="res://scene/player.tscn" id="1_3u3py"]
+[ext_resource type="PackedScene" uid="uid://o8jih1iks4x5" path="res://scene/bullet.tscn" id="2_4kls6"]
+[ext_resource type="PackedScene" uid="uid://3r2gmpgp3sam" path="res://scene/enemy.tscn" id="3_8d0jy"]
+[ext_resource type="PackedScene" uid="uid://cyu4fmfoxt2vx" path="res://scene/bullet_2.tscn" id="4_aelac"]
+[ext_resource type="PackedScene" uid="uid://6ciocx7syw28" path="res://scene/bullet_1.tscn" id="5_x2aec"]
+[ext_resource type="Script" path="res://script/status.gd" id="6_ewnan"]
+
+[node name="main" type="Node2D"]
+
+[node name="player" parent="." instance=ExtResource("1_3u3py")]
+position = Vector2(325, 565)
+
+[node name="bullet2" parent="." instance=ExtResource("2_4kls6")]
+position = Vector2(380, 468)
+
+[node name="bullet" parent="." instance=ExtResource("2_4kls6")]
+position = Vector2(322, 468)
+
+[node name="enemy" parent="." instance=ExtResource("3_8d0jy")]
+position = Vector2(540, 596)
+
+[node name="bullet_2" parent="." instance=ExtResource("4_aelac")]
+position = Vector2(230, 456)
+
+[node name="bullet_3" parent="." instance=ExtResource("4_aelac")]
+position = Vector2(141, 445)
+
+[node name="bullet_1" parent="." instance=ExtResource("5_x2aec")]
+position = Vector2(311, 683)
+
+[node name="bullet_4" parent="." instance=ExtResource("5_x2aec")]
+position = Vector2(171, 681)
+
+[node name="status" type="Node" parent="."]
+script = ExtResource("6_ewnan")
+
+[connection signal="send_position" from="player" to="status" method="_on_player_send_position"]

@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyu4fmfoxt2vx"]
+
+[ext_resource type="Script" path="res://script/bullet_2.gd" id="1_g6qhm"]
+[ext_resource type="Texture2D" uid="uid://c55yufw8vmr3w" path="res://asset/SpaceShooterAssetPack_Projectiles.png" id="2_bmohk"]
+[ext_resource type="Script" path="res://compenent/move_component.gd" id="3_rl0ml"]
+[ext_resource type="Script" path="res://compenent/hitbox_component.gd" id="4_p1732"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qjnoj"]
+size = Vector2(1, 1)
+
+[node name="bullet_2" type="Node2D"]
+position = Vector2(0, 1.90735e-06)
+scale = Vector2(6, 6)
+script = ExtResource("1_g6qhm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -3.17891e-07)
+texture = ExtResource("2_bmohk")
+flip_v = true
+hframes = 6
+vframes = 5
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 40)
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_rl0ml")
+actor = NodePath("..")
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+script = ExtResource("4_p1732")
+damage = 0
+energy_point = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_qjnoj")
