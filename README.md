@@ -10,6 +10,7 @@
 * MonsterSweeper(扫雷-绘画)
 * YCCTO(迷宫)
 * FindGodot(解谜)
+* CrystalSweeper(扫雷)
 
 插件收录列表：
 
